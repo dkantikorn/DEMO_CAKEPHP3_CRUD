@@ -36,8 +36,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
               <?php echo $this->Html->css('/node_modules/toastr/build/toastr.min.css'); ?>
 
               <!-- JQuery -->
-              <?php echo $this->Html->script('/node_modules/mdbootstrap/js/jquery-3.2.1.min.js'); ?>
-              <?php echo $this->Html->script('/node_modules/mdbootstrap/js/popper.min.js'); ?>
+              <?php echo $this->Html->script('/node_modules/mdbootstrap/js/jquery-3.1.1.min.js'); ?>
+              <?php //echo $this->Html->script('/node_modules/mdbootstrap/js/popper.min.js'); ?>
 
               <!-- Bootstrap core JavaScript -->
               <?php echo $this->Html->script('/node_modules/mdbootstrap/js/bootstrap.min.js'); ?>
@@ -56,7 +56,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
         <!-- SCRIPTS -->
         <!-- Bootstrap tooltips -->
-        <?php //echo $this->Html->script('/node_modules/mdbootstrap/js/tether.min.js'); ?>
+        <?php echo $this->Html->script('/node_modules/mdbootstrap/js/tether.min.js'); ?>
         <!-- MDB core JavaScript -->
         <?php echo $this->Html->script('/node_modules/mdbootstrap/js/mdb.min.js'); ?>
 
