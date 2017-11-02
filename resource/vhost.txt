@@ -1,0 +1,21 @@
+###############################################################################################
+# Apache httpd-vhosts.conf
+###############################################################################################
+<VirtualHost *:80>
+  ServerName demo.cakephp3.crud.local
+  ServerAlias demo.cakephp3.crud.local
+  DocumentRoot "${INSTALL_DIR}/www/DEMO_CAKEPHP3_CRUD/www/"
+  ErrorLog "logs/demo.cakephp3.crud.local-error.log"
+  CustomLog "logs/demo.cakephp3.crud.local-access.log" common
+  <Directory "${INSTALL_DIR}/www/DEMO_CAKEPHP3_CRUD/www/">
+    Options +Indexes +Includes +FollowSymLinks +MultiViews
+    AllowOverride All
+    Require local
+  </Directory>
+</VirtualHost>
+
+############################################################################################### 
+# host file in Windows
+###############################################################################################
+127.0.0.1			demo.cakephp3.crud.local
+::1					demo.cakephp3.crud.local
