@@ -29,22 +29,27 @@ use Cake\Event\Event;
  */
 class AppController extends Controller {
 
+    /**
+     *
+     * Documentation 
+     * Link : https://holt59.github.io/cakephp3-bootstrap-helpers/
+     * Git : https://github.com/Holt59/cakephp3-bootstrap-helpers
+     * @var type 
+     */
     public $helpers = [
-        'Form' => ['className' => 'Bootstrap.Form'],
+        'Form' => ['className' => 'Bootstrap.Form', 'useCustomFileInput' => true],
         'Html' => ['className' => 'Bootstrap.Html'],
         'Modal' => ['className' => 'Bootstrap.Modal'],
-        'Navbar' => ['className' => 'Bootstrap.Navbar'],
+        'Navbar' => ['className' => 'Bootstrap.Navbar', 'autoActiveLink' => true],
         'Paginator' => ['className' => 'Bootstrap.Paginator'],
         'Panel' => ['className' => 'Bootstrap.Panel']
     ];
 
     /**
+     * 
      * Initialization hook method.
-     *
      * Use this method to add common initialization code like loading components.
-     *
      * e.g. `$this->loadComponent('Security');`
-     *
      * @return void
      */
     public function initialize() {
@@ -52,6 +57,16 @@ class AppController extends Controller {
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        $this->loadComponent('Auth', [
+            'loginRedirect' => ['controller' => 'Users','action' => 'index'],
+            'logoutRedirect' => ['controller' => 'Users','action' => 'login'],
+            'authenticate' => [
+                'Form' => ['fields' => ['username' => 'username','password' => 'password']]
+            ],
+            'loginAction' => ['controller' => 'Users','action' => 'login'],
+            'authorize' => ['Controller'],
+            'unauthorizedRedirect' => $this->referer()// If unauthorized, return them to page they were just on
+        ]);
 
         /*
          * Enable the following components for recommended CakePHP security settings.
@@ -59,6 +74,35 @@ class AppController extends Controller {
          */
         //$this->loadComponent('Security');
         //$this->loadComponent('Csrf');
+    }
+
+    /**
+     * 
+     * Function beforeFilter trigger function catching automatically
+     * @author sarawutt.b
+     * @param Event $event
+     */
+    public function beforeFilter(Event $event) {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['login', 'logout']);
+    }
+
+    /**
+     * 
+     * Function check authorize
+     * @author sarawutt.b
+     * @param type $user
+     * @return boolean
+     */
+    public function isAuthorized($user) {
+        // Admin can access every action
+//        if (isset($user['role']) && $user['role'] === 'admin') {
+//            return true;
+//        }
+//
+//        // Default deny
+//        return false;
+        return true;
     }
 
     /**

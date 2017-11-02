@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Entity;
 
 /**
@@ -36,8 +37,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\NamePrefix $name_prefix
  * @property \App\Model\Entity\Course[] $courses
  */
-class User extends Entity
-{
+class User extends Entity {
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -86,4 +86,29 @@ class User extends Entity
     protected $_hidden = [
         'password'
     ];
+
+    /**
+     * 
+     * Function trigger save database
+     * @author sarawutt.b
+     * @param type $password
+     * @return type
+     */
+    protected function _setPassword($password) {
+        if (strlen($password) > 0) {
+            return (new DefaultPasswordHasher)->hash($password);
+        }
+    }
+
+    /**
+     * 
+     * Function checking for owner of the article | Example
+     * @param type $articleId
+     * @param type $userId
+     * @return type
+     */
+    public function isOwnedBy($articleId, $userId) {
+        return $this->exists(['id' => $articleId, 'user_id' => $userId]);
+    }
+
 }

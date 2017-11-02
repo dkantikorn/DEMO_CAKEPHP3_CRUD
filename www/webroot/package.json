@@ -1,7 +1,7 @@
 {
   "name": "demo_cakephp_crud",
   "version": "1.0.0",
-  "description": "Demo for CakePHP 3.4 with CRUDE and Material Design for Bootstrap (MBD)",
+  "description": "Demo for CakePHP 3.5.x with CRUDE and Material Design for Bootstrap (MBD)",
   "main": "index.js",
   "directories": {
     "test": "tests"
