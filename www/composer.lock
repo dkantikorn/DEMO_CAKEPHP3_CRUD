@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "163c94a955a9c68b07a07d64efc0940d",
+    "content-hash": "ee4c52b57e27b2bd46ba7248ce9431b7",
     "packages": [
         {
             "name": "aura/intl",
@@ -54,16 +54,16 @@
         },
         {
             "name": "cakephp/cakephp",
-            "version": "3.5.4",
+            "version": "3.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "eb609aff20945f8bc86cfb1fd3c50e6c62a502b0"
+                "reference": "042d0cd868412fa60d9ea63e5e299e65289768c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/eb609aff20945f8bc86cfb1fd3c50e6c62a502b0",
-                "reference": "eb609aff20945f8bc86cfb1fd3c50e6c62a502b0",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/042d0cd868412fa60d9ea63e5e299e65289768c0",
+                "reference": "042d0cd868412fa60d9ea63e5e299e65289768c0",
                 "shasum": ""
             },
             "require": {
@@ -136,7 +136,7 @@
                 "rapid-development",
                 "validation"
             ],
-            "time": "2017-10-16T02:25:27+00:00"
+            "time": "2017-11-02T01:05:43+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -287,6 +287,48 @@
             ],
             "description": "A composer installer for CakePHP 3.0+ plugins.",
             "time": "2017-03-21T13:48:47+00:00"
+        },
+        {
+            "name": "holt59/cakephp3-bootstrap-helpers",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Holt59/cakephp3-bootstrap-helpers.git",
+                "reference": "43e00d23c7c2440fb576e613fde92bed5ac244ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Holt59/cakephp3-bootstrap-helpers/zipball/43e00d23c7c2440fb576e613fde92bed5ac244ee",
+                "reference": "43e00d23c7c2440fb576e613fde92bed5ac244ee",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": ">=3.4.0",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "~2.1",
+                "phpunit/phpunit": "<6.0"
+            },
+            "type": "cakephp-plugin",
+            "extra": {
+                "installer-name": "Bootstrap"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bootstrap\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Bootstrap Helpers for CakePHP 3.0",
+            "keywords": [
+                "bootstrap",
+                "cakephp"
+            ],
+            "time": "2017-09-17T13:21:22+00:00"
         },
         {
             "name": "josegonzalez/dotenv",
@@ -2149,6 +2191,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "holt59/cakephp3-bootstrap-helpers": 20,
         "psy/psysh": 0
     },
     "prefer-stable": true,
