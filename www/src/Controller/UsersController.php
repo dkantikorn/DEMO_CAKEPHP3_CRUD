@@ -31,15 +31,7 @@ class UsersController extends AppController {
     public function login() {
         $this->viewBuilder()->layout('signin');
         if ($this->request->is('post')) {
-
-            $user = $this->Users->get($id, [
-                'contain' => ['Faculties', 'Roles', 'NamePrefixes', 'Courses']
-            ]);
-            debug($user);
-            exit;
             $user = $this->Auth->identify();
-            //debug($this->request->data);exit;
-//            debug($user);exit;
             if ($user) {
                 $this->Auth->setUser($user);
                 return $this->redirect($this->Auth->redirectUrl());
