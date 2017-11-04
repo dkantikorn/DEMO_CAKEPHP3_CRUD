@@ -84,7 +84,7 @@ class AppController extends Controller {
      */
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
-        $this->Auth->allow(['login', 'logout']);
+        $this->Auth->allow(['login', 'logout','index']);
     }
 
     /**
@@ -122,6 +122,7 @@ class AppController extends Controller {
             mkdir($folder_url);
         }
 
+        
         //Bould new path if $itemId to be not null
         if ($itemId) {
             $folder_url = WWW_ROOT . $folder . '/' . $itemId;
@@ -160,23 +161,23 @@ class AppController extends Controller {
                     $url = $rel_url . '/' . $filename;
                     $success = move_uploaded_file($file['tmp_name'], $url);
                     if ($success) {
-                        $result['urls'][] = '/' . $url;
-                        $result['upfilename'][] = $filename;
-                        $result['ext'][] = $userfile_extn;
-                        $result['origin_name'][] = $file['name'];
-                        $result['type'][] = $file['type'];
+                        $result['uploadPaths'][] = '/' . $url;
+                        $result['uploadFileNames'][] = $filename;
+                        $result['uploadExts'][] = $userfile_extn;
+                        $result['uploadOriginFileNames'][] = $file['name'];
+                        $result['uploadFileTypes'][] = $file['type'];
                     } else {
-                        $result['errors'][] = __("Error uploaded {$filename}. Please try again.");
+                        $result['uploadErrors'][] = __("Error uploaded {$filename}. Please try again.");
                     }
                     break;
                 case 3:
-                    $result['errors'][] = __("Error uploading {$filename}. Please try again.");
+                    $result['uploadErrors'][] = __("Error uploading {$filename}. Please try again.");
                     break;
                 case 4:
-                    $result['nofiles'][] = __("No file Selected");
+                    $result['noFiles'][] = __("No file Selected");
                     break;
                 default:
-                    $result['errors'][] = __("System error uploading {$filename}. Contact webmaster.");
+                    $result['uploadErrors'][] = __("System error uploading {$filename}. Contact webmaster.");
                     break;
             }
         } else {
@@ -184,7 +185,7 @@ class AppController extends Controller {
             foreach ($map as $k => $v) {
                 $permiss .= "{$v}, ";
             }
-            $result['errors'][] = __("{$filename} cannot be uploaded. Acceptable file types in : %s", trim($permiss, ','));
+            $result['uploadErrors'][] = __("{$filename} cannot be uploaded. Acceptable file types in : %s", trim($permiss, ','));
         }
         return $result;
     }

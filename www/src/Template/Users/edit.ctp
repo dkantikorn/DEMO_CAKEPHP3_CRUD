@@ -5,7 +5,7 @@
 ?>
 <div class="container">
     <div class="users form large-9 medium-8 columns content">
-        <?php echo $this->Form->create($user); ?>
+        <?php echo $this->Form->create($user, ['type' => 'file']); ?>
         <fieldset>
             <legend><?php echo __('Edit User'); ?></legend>
             <?php
@@ -29,11 +29,11 @@
             echo $this->Form->control('province');
             echo $this->Form->control('zipcode');
             echo $this->Form->control('status');
-            echo $this->Form->control('picture_path');
+            echo $this->Form->control('picture_path', ['type' => 'file']);
             echo $this->Form->control('courses._ids', ['options' => $courses]);
             ?>
         </fieldset>
-        <?php echo $this->Form->button(__('Submit'),['class'=>'btn btn-primary']); ?>
+        <?php echo $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']); ?>
         <?php echo $this->Form->end(); ?>
     </div>
 </div>

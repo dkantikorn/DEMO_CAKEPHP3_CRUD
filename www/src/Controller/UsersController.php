@@ -19,7 +19,7 @@ class UsersController extends AppController {
      */
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow('add', 'logout');
+        $this->Auth->allow('add', 'logout', 'index');
     }
 
     /**
@@ -90,11 +90,13 @@ class UsersController extends AppController {
      */
     public function add() {
         $user = $this->Users->newEntity();
+
         if ($this->request->is('post')) {
+            $tmpUpload = $this->uploadFiles('upload/profile', $this->request->data['picture_path']);
+            $this->request->data['picture_path'] = $tmpUpload['uploadPaths'][0];
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -119,10 +121,11 @@ class UsersController extends AppController {
             'contain' => ['Courses']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
+            $tmpUpload = $this->uploadFiles('upload/profile', $this->request->data['picture_path']);
+            $this->request->data['picture_path'] = $tmpUpload['uploadPaths'][0];
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
