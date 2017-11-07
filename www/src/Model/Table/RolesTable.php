@@ -33,8 +33,12 @@ class RolesTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
-
-        $this->setTable('roles');
+        
+//        $this->table('system.roles');
+        //$this->setTable('system.roles');
+//        $this->setTable('roles');
+        //debug($this->connection()->config());exit;
+        $this->setTable('system.roles');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 

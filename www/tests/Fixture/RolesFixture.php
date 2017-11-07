@@ -11,6 +11,13 @@ class RolesFixture extends TestFixture
 {
 
     /**
+     * Table name
+     *
+     * @var string
+     */
+    public $table = 'system.roles';
+
+    /**
      * Fields
      *
      * @var array
@@ -46,8 +53,8 @@ class RolesFixture extends TestFixture
             'status' => 'Lorem ipsum dolor sit ame',
             'create_uid' => 1,
             'update_uid' => 1,
-            'created' => 1509617239,
-            'modified' => 1509617239
+            'created' => 1509968579,
+            'modified' => 1509968579
         ],
     ];
 }

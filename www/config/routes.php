@@ -78,6 +78,12 @@ Router::scope('/', function (RouteBuilder $routes) {
 });
 
 /**
+ * Extension routing with REST API
+ * json | xml
+ */
+Router::extensions(['json', 'xml']);
+
+/**
  * Load all plugin routes. See the Plugin documentation on
  * how to customize the loading of plugin routes.
  */

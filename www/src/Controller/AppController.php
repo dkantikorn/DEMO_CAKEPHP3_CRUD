@@ -84,7 +84,7 @@ class AppController extends Controller {
      */
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
-        $this->Auth->allow(['login', 'logout','index']);
+        $this->Auth->allow(['login', 'logout']);
     }
 
     /**

@@ -19,7 +19,7 @@ class UsersController extends AppController {
      */
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow('add', 'logout', 'index');
+        $this->Auth->allow('add', 'logout');
     }
 
     /**
@@ -62,7 +62,6 @@ class UsersController extends AppController {
             'contain' => ['Faculties', 'Roles', 'NamePrefixes']
         ];
         $users = $this->paginate($this->Users);
-
         $this->set(compact('users'));
         $this->set('_serialize', ['users']);
     }

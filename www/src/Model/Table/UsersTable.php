@@ -36,12 +36,13 @@ class UsersTable extends Table {
     public function initialize(array $config) {
         parent::initialize($config);
 
+//        $this->setSchema('system');
         $this->setTable('users');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
-
+//$this->table($this->connection()->config()['database'] . '.tableName');
 //        $this->hasOne('Faculties', [
 //            'foreignKey' => 'faculty_id',
 //            'conditions' => ['Profile.published' => '1'],
