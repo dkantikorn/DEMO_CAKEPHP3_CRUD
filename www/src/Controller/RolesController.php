@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -10,18 +11,24 @@ use App\Controller\AppController;
  *
  * @method \App\Model\Entity\Role[] paginate($object = null, array $settings = [])
  */
-class RolesController extends AppController
-{
+class RolesController extends AppController {
+
+    public function initialize() {
+        parent::initialize();
+        $this->loadComponent('Utility');
+        //$this->loadComponent('Comments', Configure::read('Comments'));
+    }
 
     /**
      * Index method
      *
      * @return \Cake\Http\Response|void
      */
-    public function index()
-    {
+    public function index() {
+//
+//        echo $this->Utility->doComplexOperation(1, 2);
+//        exit;
         $roles = $this->paginate($this->Roles);
-
         $this->set(compact('roles'));
         $this->set('_serialize', ['roles']);
     }
@@ -33,8 +40,7 @@ class RolesController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
-    {
+    public function view($id = null) {
         $role = $this->Roles->get($id, [
             'contain' => ['Users']
         ]);
@@ -48,8 +54,7 @@ class RolesController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
-    {
+    public function add() {
         $role = $this->Roles->newEntity();
         if ($this->request->is('post')) {
             $role = $this->Roles->patchEntity($role, $this->request->getData());
@@ -71,8 +76,7 @@ class RolesController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
-    {
+    public function edit($id = null) {
         $role = $this->Roles->get($id, [
             'contain' => []
         ]);
@@ -96,8 +100,7 @@ class RolesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
         $this->request->allowMethod(['post', 'delete']);
         $role = $this->Roles->get($id);
         if ($this->Roles->delete($role)) {
@@ -108,4 +111,5 @@ class RolesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
 }

@@ -6,9 +6,9 @@
 ?>
 <div class="container">
     <div class="row">
-        <div class="users index large-9 medium-8 columns content">
+        <div class="users index large-9 medium-8 columns content table-responsive">
             <h3><?php echo __('Users') ?></h3>
-            <table cellpadding="0" cellspacing="0" class="table">
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col"><?php echo $this->Paginator->sort('faculty_id') ?></th>

@@ -218,3 +218,10 @@ if (Configure::read('debug')) {
 
 //Bootstraping for holt59/cakephp3-bootstrap-helpers
 Plugin::load('Bootstrap');
+
+//CakePHP Migrations
+Plugin::load('Migrations');
+
+//Use for custom them for the baking cmd
+//Configure::write('Bake.theme', 'MyTheme');
+Plugin::load('Pakgon', ['bootstrap' => false, 'routes' => true]);
