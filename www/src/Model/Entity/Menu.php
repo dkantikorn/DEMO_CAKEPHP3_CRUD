@@ -25,10 +25,6 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $modified
  * @property string $badge
  * @property int $page_level
- *
- * @property \App\Model\Entity\SysController $sys_controller
- * @property \App\Model\Entity\SysAction $sys_action
- * @property \App\Model\Entity\MenuParent $menu_parent
  */
 class Menu extends Entity
 {
@@ -60,9 +56,6 @@ class Menu extends Entity
         'created' => true,
         'modified' => true,
         'badge' => true,
-        'page_level' => true,
-        'sys_controller' => true,
-        'sys_action' => true,
-        'menu_parent' => true
+        'page_level' => true
     ];
 }

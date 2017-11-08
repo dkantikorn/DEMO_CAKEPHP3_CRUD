@@ -20,9 +20,6 @@ class MenusController extends AppController
      */
     public function index()
     {
-//        $this->paginate = [
-//            'contain' => ['SysControllers', 'SysActions']
-//        ];
         $menus = $this->paginate($this->Menus);
 
         $this->set(compact('menus'));
@@ -39,7 +36,7 @@ class MenusController extends AppController
     public function view($id = null)
     {
         $menu = $this->Menus->get($id, [
-            'contain' => ['SysControllers', 'SysActions', 'MenuParents']
+            'contain' => []
         ]);
 
         $this->set('menu', $menu);
@@ -63,10 +60,7 @@ class MenusController extends AppController
             }
             $this->Flash->error(__('The menu could not be saved. Please, try again.'));
         }
-        $sysControllers = $this->Menus->SysControllers->find('list', ['limit' => 200]);
-        $sysActions = $this->Menus->SysActions->find('list', ['limit' => 200]);
-        $menuParents = $this->Menus->MenuParents->find('list', ['limit' => 200]);
-        $this->set(compact('menu', 'sysControllers', 'sysActions', 'menuParents'));
+        $this->set(compact('menu'));
         $this->set('_serialize', ['menu']);
     }
 
@@ -91,10 +85,7 @@ class MenusController extends AppController
             }
             $this->Flash->error(__('The menu could not be saved. Please, try again.'));
         }
-        $sysControllers = $this->Menus->SysControllers->find('list', ['limit' => 200]);
-        $sysActions = $this->Menus->SysActions->find('list', ['limit' => 200]);
-        $menuParents = $this->Menus->MenuParents->find('list', ['limit' => 200]);
-        $this->set(compact('menu', 'sysControllers', 'sysActions', 'menuParents'));
+        $this->set(compact('menu'));
         $this->set('_serialize', ['menu']);
     }
 

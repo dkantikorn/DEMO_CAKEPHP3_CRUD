@@ -24,10 +24,7 @@ class MenusTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.menus',
-        'app.sys_controllers',
-        'app.sys_actions',
-        'app.menu_parents'
+        'app.menus'
     ];
 
     /**

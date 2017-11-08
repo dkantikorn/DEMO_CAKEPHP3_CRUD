@@ -46,8 +46,8 @@ class PositionsFixture extends TestFixture
             'status' => 'Lorem ipsum dolor sit ame',
             'create_uid' => 1,
             'update_uid' => 1,
-            'created' => 1510095989,
-            'modified' => 1510095989
+            'created' => 1510117288,
+            'modified' => 1510117288
         ],
     ];
 }

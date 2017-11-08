@@ -15,8 +15,13 @@
 %>
 <?php
 /**
- * @var \<%= $namespace %>\View\AppView $this
- * @var \<%= $entityClass %> $<%= $singularVar %>
+ * 
+ * The template for <%= $action . ' page of ' . $pluralVar . "Controller." %>
+ * @author  pakgon.Ltd
+ * @var     \<%= $namespace %>\View\AppView $this
+ * @var     \<%= $entityClass %> $<%= $singularVar %>
+ * @since   <%= date('Y-m-d H:i:s') %>
+ * @license Pakgon.Ltd
  */
 ?>
 <%= $this->element('form');

@@ -9,9 +9,9 @@ use Cake\Validation\Validator;
 /**
  * Menus Model
  *
- * @property \App\Model\Table\SysControllersTable|\Cake\ORM\Association\BelongsTo $SysControllers
- * @property \App\Model\Table\SysActionsTable|\Cake\ORM\Association\BelongsTo $SysActions
- * @property \App\Model\Table\MenuParentsTable|\Cake\ORM\Association\BelongsTo $MenuParents
+ * @property |\Cake\ORM\Association\BelongsTo $SysControllers
+ * @property |\Cake\ORM\Association\BelongsTo $SysActions
+ * @property |\Cake\ORM\Association\BelongsTo $MenuParents
  *
  * @method \App\Model\Entity\Menu get($primaryKey, $options = [])
  * @method \App\Model\Entity\Menu newEntity($data = null, array $options = [])
