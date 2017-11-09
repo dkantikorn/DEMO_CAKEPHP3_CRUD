@@ -9,7 +9,7 @@ use App\Controller\AppController;
  * @author  pakgon.Ltd
  * @property \App\Model\Table\PositionsTable $Positions
  * @method \App\Model\Entity\Position[] paginate($object = null, array $settings = [])
- * @since   2017-11-09 05:02:32
+ * @since   2017-11-09 05:07:21
  * @license Pakgon.Ltd
  */
  
@@ -20,7 +20,7 @@ class PositionsController extends AppController {
      * Index method make list for Position.
      * @author  pakgon.Ltd
      * @return \Cake\Http\Response|void
-     * @since   2017-11-09 05:02:32
+     * @since   2017-11-09 05:07:21
      * @license Pakgon.Ltd
      */
     public function index() {
@@ -37,7 +37,7 @@ class PositionsController extends AppController {
      * @param   string|null $id Position id.
      * @return  \Cake\Http\Response|void
      * @throws  \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     * @since   2017-11-09 05:02:32
+     * @since   2017-11-09 05:07:21
      * @license Pakgon.Ltd
      */
     public function view($id = null) {
@@ -54,7 +54,7 @@ class PositionsController extends AppController {
      * Add method make for insert or add new Position.
      * @author  pakgon.Ltd  
      * @return  \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     * @since   2017-11-09 05:02:32
+     * @since   2017-11-09 05:07:21
      * @license Pakgon.Ltd
      */
     public function add() {
@@ -79,7 +79,7 @@ class PositionsController extends AppController {
      * @param   string|null $id Position id.
      * @return  \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws  \Cake\Network\Exception\NotFoundException When record not found.
-     * @since   2017-11-09 05:02:32
+     * @since   2017-11-09 05:07:21
      * @license Pakgon.Ltd
      */
     public function edit($id = null) {
@@ -106,7 +106,7 @@ class PositionsController extends AppController {
      * @param   string|null $id Position id.
      * @return  \Cake\Http\Response|null Redirects to index.
      * @throws  \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     * @since   2017-11-09 05:02:32
+     * @since   2017-11-09 05:07:21
      * @license Pakgon.Ltd
      */
     public function delete($id = null) {
