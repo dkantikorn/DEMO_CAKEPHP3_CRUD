@@ -65,6 +65,9 @@ if (isset($modelObject) && $modelObject->hasBehavior('Tree')) {
                 if (in_array($field, $primaryKey)) {
                     continue;
                 }
+                if(in_array($field, ['create_uid','update_uid','ref1','ref2','ref3','ref4'])){
+                    continue;
+                }
                 if (isset($keyFields[$field])) {
                     $fieldData = $schema->column($field);
                     if (!empty($fieldData['null'])) {

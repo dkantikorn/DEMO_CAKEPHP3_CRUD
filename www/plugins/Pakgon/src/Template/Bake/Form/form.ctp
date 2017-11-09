@@ -21,40 +21,44 @@ use Cake\Form\Schema;
 use Cake\Validation\Validator;
 
 /**
+ *
  * <%= $name %> Form.
+ * @author  pakgon.Ltd
+ * @since   <%= date('Y-m-d H:i:s') %>
+ * @license Pakgon.Ltd
  */
-class <%= $name %>Form extends Form
-{
+class <%= $name %>Form extends Form {
+    
     /**
-     * Builds the schema for the modelless form
      *
+     * Builds the schema for the modelless form
+     * @author  pakgon.Ltd
      * @param \Cake\Form\Schema $schema From schema
      * @return \Cake\Form\Schema
      */
-    protected function _buildSchema(Schema $schema)
-    {
+    protected function _buildSchema(Schema $schema) {
         return $schema;
     }
 
     /**
-     * Form validation builder
      *
+     * Form validation builder
+     * @author  pakgon.Ltd
      * @param \Cake\Validation\Validator $validator to use against the form
      * @return \Cake\Validation\Validator
      */
-    protected function _buildValidator(Validator $validator)
-    {
+    protected function _buildValidator(Validator $validator) {
         return $validator;
     }
 
     /**
-     * Defines what to execute once the From is being processed
      *
+     * Defines what to execute once the From is being processed
+     * @author  pakgon.Ltd
      * @param array $data Form data.
      * @return bool
      */
-    protected function _execute(array $data)
-    {
+    protected function _execute(array $data) {
         return true;
     }
 }

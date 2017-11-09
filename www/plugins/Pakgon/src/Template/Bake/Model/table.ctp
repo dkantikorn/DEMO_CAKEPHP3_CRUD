@@ -49,17 +49,16 @@ echo implode("\n", $uses);
 
 
 <%= $this->DocBlock->classDescription($name, 'Model', $annotations) %>
-class <%= $name %>Table extends Table
-{
+class <%= $name %>Table extends Table {
 
     /**
-     * Initialize method
      *
+     * Initialize method
+     * @author  pakgon.Ltd
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
-    {
+    public function initialize(array $config) {
         parent::initialize($config);
 
 <% if (!empty($table)): %>
@@ -96,13 +95,13 @@ class <%= $name %>Table extends Table
 <% if (!empty($validation)): %>
 
     /**
-     * Default validation rules.
      *
+     * Default validation rules.
+     * @author  pakgon.Ltd
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
-    {
+    public function validationDefault(Validator $validator) {
 <%
 foreach ($validation as $field => $rules):
     $validationMethods = [];
@@ -163,14 +162,14 @@ endforeach;
 <% if (!empty($rulesChecker)): %>
 
     /**
+     *
      * Returns a rules checker object that will be used for validating
      * application integrity.
-     *
+     * @author  pakgon.Ltd
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
-    {
+    public function buildRules(RulesChecker $rules) {
     <%- foreach ($rulesChecker as $field => $rule): %>
         $rules->add($rules-><%= $rule['name'] %>(['<%= $field %>']<%= !empty($rule['extra']) ? ", '$rule[extra]'" : '' %>));
     <%- endforeach; %>
@@ -181,12 +180,12 @@ endforeach;
 <% if ($connection !== 'default'): %>
 
     /**
-     * Returns the database connection name to use by default.
      *
+     * Returns the database connection name to use by default.
+     * @author  pakgon.Ltd
      * @return string
      */
-    public static function defaultConnectionName()
-    {
+    public static function defaultConnectionName() {
         return '<%= $connection %>';
     }
 <% endif; %>

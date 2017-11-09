@@ -20,15 +20,21 @@ use Cake\ORM\Behavior;
 use Cake\ORM\Table;
 
 /**
+ *
+ * @author  pakgon.Ltd
  * <%= $name %> behavior
+ * @since   <%= date('Y-m-d H:i:s') %>
+ * @license Pakgon.Ltd
  */
-class <%= $name %>Behavior extends Behavior
-{
+class <%= $name %>Behavior extends Behavior {
 
     /**
-     * Default configuration.
      *
-     * @var array
+     * Default configuration.
+     * @author  pakgon.Ltd
+     * @var     array
+     * @since   <%= date('Y-m-d H:i:s') %>
+     * @license Pakgon.Ltd
      */
     protected $_defaultConfig = [];
 }

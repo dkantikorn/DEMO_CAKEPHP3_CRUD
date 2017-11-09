@@ -15,14 +15,16 @@
 %>
 
     /**
-     * Delete method
      *
-     * @param string|null $id <%= $singularHumanName %> id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * Delete method make for delete record of <%= $singularHumanName %>.
+     * @author  pakgon.Ltd
+     * @param   string|null $id <%= $singularHumanName %> id.
+     * @return  \Cake\Http\Response|null Redirects to index.
+     * @throws  \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @since   <%= date('Y-m-d H:i:s') %>
+     * @license Pakgon.Ltd
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
         $this->request->allowMethod(['post', 'delete']);
         $<%= $singularName %> = $this-><%= $currentModelName %>->get($id);
         if ($this-><%= $currentModelName; %>->delete($<%= $singularName %>)) {
@@ -30,6 +32,6 @@
         } else {
             $this->Flash->error(__('The <%= strtolower($singularHumanName) %> could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }

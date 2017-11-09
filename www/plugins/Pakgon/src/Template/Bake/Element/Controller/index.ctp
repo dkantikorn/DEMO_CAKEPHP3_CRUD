@@ -15,12 +15,14 @@
 %>
 
     /**
-     * Index method
      *
+     * Index method make list for <%= $singularHumanName %>.
+     * @author  pakgon.Ltd
      * @return \Cake\Http\Response|void
+     * @since   <%= date('Y-m-d H:i:s') %>
+     * @license Pakgon.Ltd
      */
-    public function index()
-    {
+    public function index() {
 <% $belongsTo = $this->Bake->aliasExtractor($modelObj, 'BelongsTo'); %>
 <% if ($belongsTo): %>
         $this->paginate = [

@@ -20,10 +20,13 @@ use Cake\View\Helper;
 use Cake\View\View;
 
 /**
+ *
  * <%= $name %> helper
+ * @author  pakgon.Ltd
+ * @since   <%= date('Y-m-d H:i:s') %>
+ * @license Pakgon.Ltd
  */
-class <%= $name %>Helper extends Helper
-{
+class <%= $name %>Helper extends Helper {
 
     /**
      * Default configuration.

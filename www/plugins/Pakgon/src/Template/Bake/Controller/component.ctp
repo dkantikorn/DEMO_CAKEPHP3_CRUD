@@ -20,15 +20,19 @@ use Cake\Controller\Component;
 use Cake\Controller\ComponentRegistry;
 
 /**
+ * 
  * <%= $name %> component
+ * @author  pakgon.Ltd
+ * @since   <%= date('Y-m-d H:i:s') %>
+ * @license Pakgon.Ltd
  */
-class <%= $name %>Component extends Component
-{
+ 
+class <%= $name %>Component extends Component {
 
     /**
+     * 
      * Default configuration.
-     *
-     * @var array
+     * @var array property of the component
      */
     protected $_defaultConfig = [];
 }

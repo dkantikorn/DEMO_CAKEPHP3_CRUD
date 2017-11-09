@@ -15,17 +15,24 @@
 %>
 <?php
 /**
- * @var \<%= $namespace %>\View\AppView $this
+ * 
+ * The template for <%= $action . ' page of ' . $pluralVar . "Controller." %>
+ * @author  pakgon.Ltd
+ * @var     \<%= $namespace %>\View\AppView $this
+ * @since   <%= date('Y-m-d H:i:s') %>
+ * @license Pakgon.Ltd
  */
 ?>
-<div class="<%= $pluralVar %> form">
-<?= $this->Flash->render('auth') ?>
-    <?= $this->Form->create() ?>
-    <fieldset>
-        <legend><?= __('Please enter your username and password') ?></legend>
-        <?= $this->Form->control('username') ?>
-        <?= $this->Form->control('password') ?>
-    </fieldset>
-    <?= $this->Form->button(__('Login')); ?>
-    <?= $this->Form->end() ?>
+<div class="container">
+    <div class="<%= $pluralVar %> form">
+    <?php echo $this->Flash->render('auth'); ?>
+        <?php echo $this->Form->create(); ?>
+        <fieldset>
+            <legend><?php echo __('Please enter your username and password'); ?></legend>
+            <?php echo $this->Form->control('username'); ?>
+            <?php echo $this->Form->control('password'); ?>
+        </fieldset>
+        <?php echo $this->Form->button(__('Login')); ?>
+        <?php echo $this->Form->end(); ?>
+    </div>
 </div>

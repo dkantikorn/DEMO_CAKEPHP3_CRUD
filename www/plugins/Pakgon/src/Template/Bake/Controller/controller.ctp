@@ -24,8 +24,9 @@ namespace <%= $namespace %>\Controller<%= $prefix %>;
 use <%= $namespace %>\Controller\AppController;
 
 /**
- * <%= $name %> Controller
  *
+ * <%= $name %> Controller
+ * @author  pakgon.Ltd
 <% if ($defaultModel): %>
  * @property \<%= $defaultModel %> $<%= $name %>
 <% endif; %>
@@ -36,12 +37,13 @@ foreach ($components as $component):
  * @property <%= $classInfo['fqn'] %> $<%= $classInfo['name'] %>
 <% endforeach; %>
 <% if (in_array('index', $actions)): %>
- *
  * @method \<%= $namespace %>\Model\Entity\<%= $entityClassName %>[] paginate($object = null, array $settings = [])
 <% endif; %>
+ * @since   <%= date('Y-m-d H:i:s') %>
+ * @license Pakgon.Ltd
  */
-class <%= $name %>Controller extends AppController
-{
+ 
+class <%= $name %>Controller extends AppController {
 <%
 echo $this->Bake->arrayProperty('helpers', $helpers, ['indent' => false]);
 echo $this->Bake->arrayProperty('components', $components, ['indent' => false]);

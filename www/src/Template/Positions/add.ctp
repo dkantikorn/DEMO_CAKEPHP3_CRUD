@@ -5,7 +5,7 @@
  * @author  pakgon.Ltd
  * @var     \App\View\AppView $this
  * @var     \App\Model\Entity\Position $position
- * @since   2017-11-08 05:01:28
+ * @since   2017-11-09 05:02:32
  * @license Pakgon.Ltd
  */
 ?>
@@ -26,8 +26,6 @@
                     <?php echo $this->Form->control('name_eng'); ?>
                     <?php echo $this->Form->control('description'); ?>
                     <?php echo $this->Form->control('status'); ?>
-                    <?php echo $this->Form->control('create_uid'); ?>
-                    <?php echo $this->Form->control('update_uid'); ?>
             </fieldset>
         <?php echo $this->Form->button(__('Submit')); ?>
         <?php echo $this->Form->end(); ?>

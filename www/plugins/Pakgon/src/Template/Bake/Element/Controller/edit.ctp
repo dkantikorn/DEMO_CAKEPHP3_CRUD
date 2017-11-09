@@ -19,14 +19,16 @@ $compact = ["'" . $singularName . "'"];
 %>
 
     /**
-     * Edit method
      *
-     * @param string|null $id <%= $singularHumanName %> id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * Edit method make for update <%= $singularHumanName %>.
+     * @author  pakgon.Ltd
+     * @param   string|null $id <%= $singularHumanName %> id.
+     * @return  \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws  \Cake\Network\Exception\NotFoundException When record not found.
+     * @since   <%= date('Y-m-d H:i:s') %>
+     * @license Pakgon.Ltd
      */
-    public function edit($id = null)
-    {
+    public function edit($id = null) {
         $<%= $singularName %> = $this-><%= $currentModelName %>->get($id, [
             'contain' => [<%= $this->Bake->stringifyList($belongsToMany, ['indent' => false]) %>]
         ]);
@@ -34,7 +36,6 @@ $compact = ["'" . $singularName . "'"];
             $<%= $singularName %> = $this-><%= $currentModelName %>->patchEntity($<%= $singularName %>, $this->request->getData());
             if ($this-><%= $currentModelName; %>->save($<%= $singularName %>)) {
                 $this->Flash->success(__('The <%= strtolower($singularHumanName) %> has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The <%= strtolower($singularHumanName) %> could not be saved. Please, try again.'));
@@ -50,6 +51,7 @@ $compact = ["'" . $singularName . "'"];
             $compact[] = "'$otherPlural'";
         endforeach;
 %>
+        
         $this->set(compact(<%= join(', ', $compact) %>));
         $this->set('_serialize', ['<%=$singularName%>']);
     }

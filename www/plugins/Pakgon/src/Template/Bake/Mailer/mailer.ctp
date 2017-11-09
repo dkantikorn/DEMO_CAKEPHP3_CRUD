@@ -19,14 +19,18 @@ namespace <%= $namespace %>\Mailer;
 use Cake\Mailer\Mailer;
 
 /**
+ *
  * <%= $name %> mailer.
+ * @author  pakgon.Ltd
+ * @since   <%= date('Y-m-d H:i:s') %>
+ * @license Pakgon.Ltd
  */
-class <%= $name %>Mailer extends Mailer
-{
+class <%= $name %>Mailer extends Mailer {
 
     /**
-     * Mailer's name.
      *
+     * Mailer's name.
+     * @author  pakgon.Ltd
      * @var string
      */
     static public $name = '<%= $name %>';

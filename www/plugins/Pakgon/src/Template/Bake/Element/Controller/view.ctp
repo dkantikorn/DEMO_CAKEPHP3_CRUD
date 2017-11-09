@@ -21,14 +21,16 @@ $allAssociations = array_merge(
 %>
 
     /**
-     * View method
      *
-     * @param string|null $id <%= $singularHumanName %> id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * View method make for view information of <%= $singularHumanName %>.
+     * @author  pakgon.Ltd
+     * @param   string|null $id <%= $singularHumanName %> id.
+     * @return  \Cake\Http\Response|void
+     * @throws  \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @since   <%= date('Y-m-d H:i:s') %>
+     * @license Pakgon.Ltd
      */
-    public function view($id = null)
-    {
+    public function view($id = null) {
         $<%= $singularName%> = $this-><%= $currentModelName %>->get($id, [
             'contain' => [<%= $this->Bake->stringifyList($allAssociations, ['indent' => false]) %>]
         ]);

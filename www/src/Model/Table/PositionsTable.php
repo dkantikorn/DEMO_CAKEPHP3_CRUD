@@ -19,17 +19,16 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class PositionsTable extends Table
-{
+class PositionsTable extends Table {
 
     /**
-     * Initialize method
      *
+     * Initialize method
+     * @author  pakgon.Ltd
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
-    {
+    public function initialize(array $config) {
         parent::initialize($config);
 
         $this->setTable('positions');
@@ -40,13 +39,13 @@ class PositionsTable extends Table
     }
 
     /**
-     * Default validation rules.
      *
+     * Default validation rules.
+     * @author  pakgon.Ltd
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
-    {
+    public function validationDefault(Validator $validator) {
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
@@ -83,12 +82,12 @@ class PositionsTable extends Table
     }
 
     /**
-     * Returns the database connection name to use by default.
      *
+     * Returns the database connection name to use by default.
+     * @author  pakgon.Ltd
      * @return string
      */
-    public static function defaultConnectionName()
-    {
+    public static function defaultConnectionName() {
         return 'system';
     }
 }

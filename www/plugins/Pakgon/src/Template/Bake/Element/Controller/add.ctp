@@ -16,18 +16,19 @@ $compact = ["'" . $singularName . "'"];
 %>
 
     /**
-     * Add method
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * Add method make for insert or add new <%= $singularHumanName %>.
+     * @author  pakgon.Ltd  
+     * @return  \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @since   <%= date('Y-m-d H:i:s') %>
+     * @license Pakgon.Ltd
      */
-    public function add()
-    {
+    public function add() {
         $<%= $singularName %> = $this-><%= $currentModelName %>->newEntity();
         if ($this->request->is('post')) {
             $<%= $singularName %> = $this-><%= $currentModelName %>->patchEntity($<%= $singularName %>, $this->request->getData());
             if ($this-><%= $currentModelName; %>->save($<%= $singularName %>)) {
                 $this->Flash->success(__('The <%= strtolower($singularHumanName) %> has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The <%= strtolower($singularHumanName) %> could not be saved. Please, try again.'));
@@ -47,6 +48,7 @@ $compact = ["'" . $singularName . "'"];
             $compact[] = "'$otherPlural'";
         endforeach;
 %>
+        
         $this->set(compact(<%= join(', ', $compact) %>));
         $this->set('_serialize', ['<%=$singularName%>']);
     }

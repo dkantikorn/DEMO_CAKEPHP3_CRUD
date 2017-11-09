@@ -42,27 +42,29 @@ namespace <%= $namespace %>\Model\Entity;
 use Cake\ORM\Entity;
 
 <%= $this->DocBlock->classDescription($name, 'Entity', $annotations) %>
-class <%= $name %> extends Entity
-{
+class <%= $name %> extends Entity {
 <% if (!empty($accessible)): %>
 
     /**
+     *
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
      * Note that when '*' is set to true, this allows all unspecified fields to
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @author  pakgon.Ltd
+     * @var     array
      */
     protected $_accessible = [<%= $this->Bake->stringifyList($accessible, ['quotes' => false]) %>];
 <% endif %>
 <% if (!empty($hidden)): %>
 
     /**
-     * Fields that are excluded from JSON versions of the entity.
      *
-     * @var array
+     * Fields that are excluded from JSON versions of the entity.
+     * @author  pakgon.Ltd
+     * @var     array
      */
     protected $_hidden = [<%= $this->Bake->stringifyList($hidden) %>];
 <% endif %>

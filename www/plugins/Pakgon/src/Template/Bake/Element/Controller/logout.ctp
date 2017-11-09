@@ -14,12 +14,15 @@
  */
 %>
 
+
     /**
-     * Logout method
-     *
+     * 
+     * Logout method make for user authentication logout.
+     * @author  pakgon.Ltd
      * @return \Cake\Http\Response
+     * @since   <%= date('Y-m-d H:i:s') %>
+     * @license Pakgon.Ltd
      */
-    public function logout()
-    {
+    public function logout() {
         return $this->redirect($this->Auth->logout());
     }

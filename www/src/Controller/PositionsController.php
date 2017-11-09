@@ -4,22 +4,26 @@ namespace App\Controller;
 use App\Controller\AppController;
 
 /**
+ *
  * Positions Controller
- *
+ * @author  pakgon.Ltd
  * @property \App\Model\Table\PositionsTable $Positions
- *
  * @method \App\Model\Entity\Position[] paginate($object = null, array $settings = [])
+ * @since   2017-11-09 05:02:32
+ * @license Pakgon.Ltd
  */
-class PositionsController extends AppController
-{
+ 
+class PositionsController extends AppController {
 
     /**
-     * Index method
      *
+     * Index method make list for Position.
+     * @author  pakgon.Ltd
      * @return \Cake\Http\Response|void
+     * @since   2017-11-09 05:02:32
+     * @license Pakgon.Ltd
      */
-    public function index()
-    {
+    public function index() {
         $positions = $this->paginate($this->Positions);
 
         $this->set(compact('positions'));
@@ -27,14 +31,16 @@ class PositionsController extends AppController
     }
 
     /**
-     * View method
      *
-     * @param string|null $id Position id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * View method make for view information of Position.
+     * @author  pakgon.Ltd
+     * @param   string|null $id Position id.
+     * @return  \Cake\Http\Response|void
+     * @throws  \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @since   2017-11-09 05:02:32
+     * @license Pakgon.Ltd
      */
-    public function view($id = null)
-    {
+    public function view($id = null) {
         $position = $this->Positions->get($id, [
             'contain' => []
         ]);
@@ -44,35 +50,39 @@ class PositionsController extends AppController
     }
 
     /**
-     * Add method
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * Add method make for insert or add new Position.
+     * @author  pakgon.Ltd  
+     * @return  \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @since   2017-11-09 05:02:32
+     * @license Pakgon.Ltd
      */
-    public function add()
-    {
+    public function add() {
         $position = $this->Positions->newEntity();
         if ($this->request->is('post')) {
             $position = $this->Positions->patchEntity($position, $this->request->getData());
             if ($this->Positions->save($position)) {
                 $this->Flash->success(__('The position has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The position could not be saved. Please, try again.'));
         }
+        
         $this->set(compact('position'));
         $this->set('_serialize', ['position']);
     }
 
     /**
-     * Edit method
      *
-     * @param string|null $id Position id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * Edit method make for update Position.
+     * @author  pakgon.Ltd
+     * @param   string|null $id Position id.
+     * @return  \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws  \Cake\Network\Exception\NotFoundException When record not found.
+     * @since   2017-11-09 05:02:32
+     * @license Pakgon.Ltd
      */
-    public function edit($id = null)
-    {
+    public function edit($id = null) {
         $position = $this->Positions->get($id, [
             'contain' => []
         ]);
@@ -80,24 +90,26 @@ class PositionsController extends AppController
             $position = $this->Positions->patchEntity($position, $this->request->getData());
             if ($this->Positions->save($position)) {
                 $this->Flash->success(__('The position has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The position could not be saved. Please, try again.'));
         }
+        
         $this->set(compact('position'));
         $this->set('_serialize', ['position']);
     }
 
     /**
-     * Delete method
      *
-     * @param string|null $id Position id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * Delete method make for delete record of Position.
+     * @author  pakgon.Ltd
+     * @param   string|null $id Position id.
+     * @return  \Cake\Http\Response|null Redirects to index.
+     * @throws  \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @since   2017-11-09 05:02:32
+     * @license Pakgon.Ltd
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
         $this->request->allowMethod(['post', 'delete']);
         $position = $this->Positions->get($id);
         if ($this->Positions->delete($position)) {
@@ -105,7 +117,7 @@ class PositionsController extends AppController
         } else {
             $this->Flash->error(__('The position could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 }
