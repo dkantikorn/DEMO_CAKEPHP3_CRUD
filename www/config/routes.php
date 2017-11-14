@@ -75,13 +75,20 @@ Router::scope('/', function (RouteBuilder $routes) {
      * routes you want in your application.
      */
     $routes->fallbacks(DashedRoute::class);
+    
+    $routes->extensions(['json', 'xml', 'ajax']);
 });
+
+//Router::scope('/', function ($routes) {
+//    $routes->extensions(['json', 'xml', 'ajax']);
+//    /*Other route definitions as already existing*/
+//});
 
 /**
  * Extension routing with REST API
  * json | xml
  */
-Router::extensions(['json', 'xml']);
+//Router::extensions(['json', 'xml']);
 
 /**
  * Load all plugin routes. See the Plugin documentation on

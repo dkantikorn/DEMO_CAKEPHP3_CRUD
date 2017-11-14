@@ -21,17 +21,16 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class NamePrefixesTable extends Table
-{
+class NamePrefixesTable extends Table {
 
     /**
-     * Initialize method
      *
+     * Initialize method
+     * @author  pakgon.Ltd
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
-    {
+    public function initialize(array $config) {
         parent::initialize($config);
 
         $this->setTable('name_prefixes');
@@ -46,13 +45,13 @@ class NamePrefixesTable extends Table
     }
 
     /**
-     * Default validation rules.
      *
+     * Default validation rules.
+     * @author  pakgon.Ltd
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
-    {
+    public function validationDefault(Validator $validator) {
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');

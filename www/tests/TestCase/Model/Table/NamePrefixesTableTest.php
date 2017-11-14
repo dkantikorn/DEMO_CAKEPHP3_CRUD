@@ -28,8 +28,8 @@ class NamePrefixesTableTest extends TestCase
         'app.users',
         'app.faculties',
         'app.courses',
-        'app.roles',
-        'app.courses_users'
+        'app.courses_users',
+        'app.roles'
     ];
 
     /**

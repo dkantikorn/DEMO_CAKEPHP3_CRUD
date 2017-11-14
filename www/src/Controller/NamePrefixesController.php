@@ -4,22 +4,26 @@ namespace App\Controller;
 use App\Controller\AppController;
 
 /**
+ *
  * NamePrefixes Controller
- *
+ * @author  pakgon.Ltd
  * @property \App\Model\Table\NamePrefixesTable $NamePrefixes
- *
  * @method \App\Model\Entity\NamePrefix[] paginate($object = null, array $settings = [])
+ * @since   2017-11-13 08:53:16
+ * @license Pakgon.Ltd
  */
-class NamePrefixesController extends AppController
-{
+ 
+class NamePrefixesController extends AppController {
 
     /**
-     * Index method
      *
+     * Index method make list for Name Prefix.
+     * @author  pakgon.Ltd
      * @return \Cake\Http\Response|void
+     * @since   2017-11-13 08:53:16
+     * @license Pakgon.Ltd
      */
-    public function index()
-    {
+    public function index() {
         $namePrefixes = $this->paginate($this->NamePrefixes);
 
         $this->set(compact('namePrefixes'));
@@ -27,14 +31,16 @@ class NamePrefixesController extends AppController
     }
 
     /**
-     * View method
      *
-     * @param string|null $id Name Prefix id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * View method make for view information of Name Prefix.
+     * @author  pakgon.Ltd
+     * @param   string|null $id Name Prefix id.
+     * @return  \Cake\Http\Response|void
+     * @throws  \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @since   2017-11-13 08:53:16
+     * @license Pakgon.Ltd
      */
-    public function view($id = null)
-    {
+    public function view($id = null) {
         $namePrefix = $this->NamePrefixes->get($id, [
             'contain' => ['Users']
         ]);
@@ -44,35 +50,39 @@ class NamePrefixesController extends AppController
     }
 
     /**
-     * Add method
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * Add method make for insert or add new Name Prefix.
+     * @author  pakgon.Ltd  
+     * @return  \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @since   2017-11-13 08:53:16
+     * @license Pakgon.Ltd
      */
-    public function add()
-    {
+    public function add() {
         $namePrefix = $this->NamePrefixes->newEntity();
         if ($this->request->is('post')) {
             $namePrefix = $this->NamePrefixes->patchEntity($namePrefix, $this->request->getData());
             if ($this->NamePrefixes->save($namePrefix)) {
                 $this->Flash->success(__('The name prefix has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The name prefix could not be saved. Please, try again.'));
         }
+        
         $this->set(compact('namePrefix'));
         $this->set('_serialize', ['namePrefix']);
     }
 
     /**
-     * Edit method
      *
-     * @param string|null $id Name Prefix id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * Edit method make for update Name Prefix.
+     * @author  pakgon.Ltd
+     * @param   string|null $id Name Prefix id.
+     * @return  \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws  \Cake\Network\Exception\NotFoundException When record not found.
+     * @since   2017-11-13 08:53:16
+     * @license Pakgon.Ltd
      */
-    public function edit($id = null)
-    {
+    public function edit($id = null) {
         $namePrefix = $this->NamePrefixes->get($id, [
             'contain' => []
         ]);
@@ -80,24 +90,26 @@ class NamePrefixesController extends AppController
             $namePrefix = $this->NamePrefixes->patchEntity($namePrefix, $this->request->getData());
             if ($this->NamePrefixes->save($namePrefix)) {
                 $this->Flash->success(__('The name prefix has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The name prefix could not be saved. Please, try again.'));
         }
+        
         $this->set(compact('namePrefix'));
         $this->set('_serialize', ['namePrefix']);
     }
 
     /**
-     * Delete method
      *
-     * @param string|null $id Name Prefix id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * Delete method make for delete record of Name Prefix.
+     * @author  pakgon.Ltd
+     * @param   string|null $id Name Prefix id.
+     * @return  \Cake\Http\Response|null Redirects to index.
+     * @throws  \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @since   2017-11-13 08:53:16
+     * @license Pakgon.Ltd
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
         $this->request->allowMethod(['post', 'delete']);
         $namePrefix = $this->NamePrefixes->get($id);
         if ($this->NamePrefixes->delete($namePrefix)) {
@@ -105,7 +117,7 @@ class NamePrefixesController extends AppController
         } else {
             $this->Flash->error(__('The name prefix could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 }
