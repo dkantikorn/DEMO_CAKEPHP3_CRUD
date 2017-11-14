@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Routes configuration
  *
@@ -17,7 +18,6 @@
  * @link          https://cakephp.org CakePHP(tm) Project
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-
 use Cake\Core\Plugin;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
@@ -57,6 +57,12 @@ Router::scope('/', function (RouteBuilder $routes) {
      * ...and connect the rest of 'Pages' controller's URLs.
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
+    
+    
+//    $routes->setExtensions(['json', 'xml', 'ajax']);
+    $routes->extensions(['json', 'xml', 'ajax']);
+//    $routes->resources('NamePrefixes');
+//    $routes->resources('RecipeRestAPIs');
 
     /**
      * Connect catchall routes for all controllers.
@@ -75,8 +81,7 @@ Router::scope('/', function (RouteBuilder $routes) {
      * routes you want in your application.
      */
     $routes->fallbacks(DashedRoute::class);
-    
-    $routes->extensions(['json', 'xml', 'ajax']);
+
 });
 
 //Router::scope('/', function ($routes) {
