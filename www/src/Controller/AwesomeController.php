@@ -17,9 +17,9 @@ use App\Controller\AppController;
  */
 class AwesomeController extends AppController {
 
-    public $helpers = ['Awesome' => ['option1' => 'Value1', 'option2' => 'Value2']];
+    public $helpers = ['Awesome'];
 
     public function index(){
-        debug('xxx');exit;
+        
     }
 }
