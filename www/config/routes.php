@@ -57,10 +57,10 @@ Router::scope('/', function (RouteBuilder $routes) {
      * ...and connect the rest of 'Pages' controller's URLs.
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
-    
-    
+
+
 //    $routes->setExtensions(['json', 'xml', 'ajax']);
-    $routes->extensions(['json', 'xml', 'ajax']);
+    $routes->extensions(['json', 'xml', 'ajax', 'rss']);
 //    $routes->resources('NamePrefixes');
 //    $routes->resources('RecipeRestAPIs');
 
@@ -81,7 +81,6 @@ Router::scope('/', function (RouteBuilder $routes) {
      * routes you want in your application.
      */
     $routes->fallbacks(DashedRoute::class);
-
 });
 
 //Router::scope('/', function ($routes) {

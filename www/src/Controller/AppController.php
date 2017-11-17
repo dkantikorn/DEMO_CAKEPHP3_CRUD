@@ -18,6 +18,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\I18n\I18n;
 
 /**
  * Application Controller
@@ -54,6 +55,7 @@ class AppController extends Controller {
      */
     public function initialize() {
         parent::initialize();
+        I18n::setLocale('th_TH');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
@@ -83,6 +85,7 @@ class AppController extends Controller {
      */
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
+        //I18n::setLocale('th_TH');
         $this->Auth->allow(['login', 'logout']);
     }
 

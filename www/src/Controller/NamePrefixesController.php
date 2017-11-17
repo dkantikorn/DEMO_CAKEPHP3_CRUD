@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -12,7 +13,6 @@ use App\Controller\AppController;
  * @since   2017-11-13 08:53:16
  * @license Pakgon.Ltd
  */
- 
 class NamePrefixesController extends AppController {
 
     /**
@@ -24,6 +24,30 @@ class NamePrefixesController extends AppController {
      * @license Pakgon.Ltd
      */
     public function index() {
+
+        //$data = $this->NamePrefixes->find()->all();
+        $data = $this->NamePrefixes->find();
+        foreach ($data as $k => $v) {
+            debug($v->name);
+        }
+
+        $data->each(function($nameprefixes) {
+            debug($nameprefixes->name);
+        });
+        
+        $tmpResultSet = $data->all();
+        debug($tmpResultSet);
+        
+        $tmpArr = $data->toArray();
+        debug($tmpArr);
+        
+        pj($tmpArr);
+        pj($data);
+        exit;
+        debug($data);
+        exit;
+        
+        
         $namePrefixes = $this->paginate($this->NamePrefixes);
 
         $this->set(compact('namePrefixes'));
@@ -67,7 +91,7 @@ class NamePrefixesController extends AppController {
             }
             $this->Flash->error(__('The name prefix could not be saved. Please, try again.'));
         }
-        
+
         $this->set(compact('namePrefix'));
         $this->set('_serialize', ['namePrefix']);
     }
@@ -94,7 +118,7 @@ class NamePrefixesController extends AppController {
             }
             $this->Flash->error(__('The name prefix could not be saved. Please, try again.'));
         }
-        
+
         $this->set(compact('namePrefix'));
         $this->set('_serialize', ['namePrefix']);
     }
@@ -117,7 +141,8 @@ class NamePrefixesController extends AppController {
         } else {
             $this->Flash->error(__('The name prefix could not be deleted. Please, try again.'));
         }
-        
+
         return $this->redirect(['action' => 'index']);
     }
+
 }
