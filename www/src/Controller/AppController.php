@@ -42,7 +42,7 @@ class AppController extends Controller {
         'Html' => ['className' => 'Bootstrap.Html'],
         'Modal' => ['className' => 'Bootstrap.Modal'],
         'Navbar' => ['className' => 'Bootstrap.Navbar', 'autoActiveLink' => true],
-        'Paginator' => ['className' => 'Bootstrap.Paginator'],
+        'Paginator' => ['className' => 'Bootstrap.Paginator','templates' => 'pakgon-paginator'],
         'Panel' => ['className' => 'Bootstrap.Panel']
     ];
 
@@ -58,6 +58,7 @@ class AppController extends Controller {
         I18n::setLocale('th_TH');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        $this->loadComponent('Paginator');
         $this->loadComponent('Auth', [
             'loginRedirect' => ['controller' => 'Users', 'action' => 'index'],
             'logoutRedirect' => ['controller' => 'Users', 'action' => 'login'],

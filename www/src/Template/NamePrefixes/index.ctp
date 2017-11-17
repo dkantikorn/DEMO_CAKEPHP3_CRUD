@@ -60,15 +60,6 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <div class="paginator">
-            <ul class="pagination">
-                <?php echo $this->Paginator->first('<< ' . __('first')); ?>
-                <?php echo $this->Paginator->prev('< ' . __('previous')); ?>
-                <?php echo $this->Paginator->numbers(); ?>
-                <?php echo $this->Paginator->next(__('next') . ' >'); ?>
-                <?php echo $this->Paginator->last(__('last') . ' >>'); ?>
-            </ul>
-            <p><?php echo $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]); ?></p>
-        </div>
+        <?php echo $this->element('common/paginator');?>
     </div>
 </div>

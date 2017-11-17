@@ -42,8 +42,8 @@ class FacultiesFixture extends TestFixture
             'name' => 'Lorem ipsum dolor sit amet',
             'detail' => 'Lorem ipsum dolor sit amet',
             'status' => 'Lorem ipsum dolor sit ame',
-            'created' => 1509613805,
-            'modified' => 1509613805
+            'created' => 1510919622,
+            'modified' => 1510919622
         ],
     ];
 }

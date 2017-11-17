@@ -26,28 +26,32 @@ class NamePrefixesController extends AppController {
     public function index() {
 
         //$data = $this->NamePrefixes->find()->all();
-        $data = $this->NamePrefixes->find();
-        foreach ($data as $k => $v) {
-            debug($v->name);
-        }
+//        $data = $this->NamePrefixes->find();
+//        foreach ($data as $k => $v) {
+//            debug($v->name);
+//        }
+//
+//        $data->each(function($nameprefixes) {
+//            debug($nameprefixes->name);
+//        });
+//        
+//        $tmpResultSet = $data->all();
+//        debug($tmpResultSet);
+//        
+//        $tmpArr = $data->toArray();
+//        debug($tmpArr);
+//        
+//        pj($tmpArr);
+//        pj($data);
+//        exit;
+//        debug($data);
+//        exit;
 
-        $data->each(function($nameprefixes) {
-            debug($nameprefixes->name);
-        });
-        
-        $tmpResultSet = $data->all();
-        debug($tmpResultSet);
-        
-        $tmpArr = $data->toArray();
-        debug($tmpArr);
-        
-        pj($tmpArr);
-        pj($data);
-        exit;
-        debug($data);
-        exit;
-        
-        
+        $this->paginate = [
+            'limit' => 1,
+            'order' => ['NamePrefixes.name' => 'asc', 'NamePrefixes.name_eng' => 'asc'],
+        ];
+
         $namePrefixes = $this->paginate($this->NamePrefixes);
 
         $this->set(compact('namePrefixes'));

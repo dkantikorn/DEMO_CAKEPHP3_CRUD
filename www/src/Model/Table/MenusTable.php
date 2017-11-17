@@ -23,17 +23,16 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class MenusTable extends Table
-{
+class MenusTable extends Table {
 
     /**
-     * Initialize method
      *
+     * Initialize method
+     * @author  pakgon.Ltd
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
-    {
+    public function initialize(array $config) {
         parent::initialize($config);
 
         $this->setTable('menus');
@@ -42,26 +41,26 @@ class MenusTable extends Table
 
         $this->addBehavior('Timestamp');
 
-//        $this->belongsTo('SysControllers', [
-//            'foreignKey' => 'sys_controller_id'
-//        ]);
-//        $this->belongsTo('SysActions', [
-//            'foreignKey' => 'sys_action_id'
-//        ]);
-//        $this->belongsTo('MenuParents', [
-//            'foreignKey' => 'menu_parent_id',
-//            'joinType' => 'INNER'
-//        ]);
+        $this->belongsTo('SysControllers', [
+            'foreignKey' => 'sys_controller_id'
+        ]);
+        $this->belongsTo('SysActions', [
+            'foreignKey' => 'sys_action_id'
+        ]);
+        $this->belongsTo('MenuParents', [
+            'foreignKey' => 'menu_parent_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
-     * Default validation rules.
      *
+     * Default validation rules.
+     * @author  pakgon.Ltd
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
-    {
+    public function validationDefault(Validator $validator) {
         $validator
             ->allowEmpty('id', 'create');
 
@@ -123,28 +122,28 @@ class MenusTable extends Table
     }
 
     /**
+     *
      * Returns a rules checker object that will be used for validating
      * application integrity.
-     *
+     * @author  pakgon.Ltd
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
-    {
-//        $rules->add($rules->existsIn(['sys_controller_id'], 'SysControllers'));
-//        $rules->add($rules->existsIn(['sys_action_id'], 'SysActions'));
-//        $rules->add($rules->existsIn(['menu_parent_id'], 'MenuParents'));
-//
-//        return $rules;
+    public function buildRules(RulesChecker $rules) {
+        $rules->add($rules->existsIn(['sys_controller_id'], 'SysControllers'));
+        $rules->add($rules->existsIn(['sys_action_id'], 'SysActions'));
+        $rules->add($rules->existsIn(['menu_parent_id'], 'MenuParents'));
+
+        return $rules;
     }
 
     /**
-     * Returns the database connection name to use by default.
      *
+     * Returns the database connection name to use by default.
+     * @author  pakgon.Ltd
      * @return string
      */
-    public static function defaultConnectionName()
-    {
+    public static function defaultConnectionName() {
         return 'system';
     }
 }

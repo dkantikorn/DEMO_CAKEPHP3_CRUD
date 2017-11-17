@@ -32,10 +32,10 @@
                             <td><?php echo h($user->email) ?></td>
                             <td><?php echo h($user->status) ?></td>
                             <td class="actions">
-                                <?php $this->Html->templates(['icon' => '<i class="fa fa-{{type}}{{attrs.class}}"{{attrs}}></i>']);?>
+                                <?php $this->Html->templates(['icon' => '<i class="fa fa-{{type}}{{attrs.class}}"{{attrs}}></i>']); ?>
                                 <?php echo $this->Html->link($this->Html->icon('search') . ' ' . __('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-sm btn-info btn-rounded waves-effect waves-light', 'escape' => false]) ?>
-                                <?php echo $this->Html->link($this->Html->icon('pencil') . ' ' . __('Edit'), ['action' => 'edit', $user->id], array('class' => 'btn btn-sm btn-warning btn-rounded waves-effect waves-light','escape'=>false)) ?>
-                                <?php echo $this->Form->postLink($this->Html->icon('trash') . ' ' . __('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id), 'class' => 'btn btn-sm btn-danger btn-rounded waves-effect waves-light confirmModal action-delete','escape'=>false]) ?>
+                                <?php echo $this->Html->link($this->Html->icon('pencil') . ' ' . __('Edit'), ['action' => 'edit', $user->id], array('class' => 'btn btn-sm btn-warning btn-rounded waves-effect waves-light', 'escape' => false)) ?>
+                                <?php echo $this->Form->postLink($this->Html->icon('trash') . ' ' . __('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id), 'class' => 'btn btn-sm btn-danger btn-rounded waves-effect waves-light confirmModal action-delete', 'escape' => false]) ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

@@ -18,10 +18,10 @@ class FacultiesControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.faculties',
         'app.courses',
-        'app.courses_users',
         'app.users',
         'app.roles',
-        'app.name_prefixes'
+        'app.name_prefixes',
+        'app.courses_users'
     ];
 
     /**

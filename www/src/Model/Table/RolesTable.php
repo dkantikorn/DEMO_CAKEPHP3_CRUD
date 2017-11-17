@@ -9,8 +9,6 @@ use Cake\Validation\Validator;
 /**
  * Roles Model
  *
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\HasMany $Users
- *
  * @method \App\Model\Entity\Role get($primaryKey, $options = [])
  * @method \App\Model\Entity\Role newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Role[] newEntities(array $data, array $options = [])
@@ -21,42 +19,33 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class RolesTable extends Table
-{
+class RolesTable extends Table {
 
     /**
-     * Initialize method
      *
+     * Initialize method
+     * @author  pakgon.Ltd
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
-    {
+    public function initialize(array $config) {
         parent::initialize($config);
-        
-//        $this->table('system.roles');
-        //$this->setTable('system.roles');
-//        $this->setTable('roles');
-        //debug($this->connection()->config());exit;
-        $this->setTable('system.roles');
+
+        $this->setTable('roles');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
-
-        $this->hasMany('Users', [
-            'foreignKey' => 'role_id'
-        ]);
     }
 
     /**
-     * Default validation rules.
      *
+     * Default validation rules.
+     * @author  pakgon.Ltd
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
-    {
+    public function validationDefault(Validator $validator) {
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
@@ -90,5 +79,15 @@ class RolesTable extends Table
             ->allowEmpty('update_uid');
 
         return $validator;
+    }
+
+    /**
+     *
+     * Returns the database connection name to use by default.
+     * @author  pakgon.Ltd
+     * @return string
+     */
+    public static function defaultConnectionName() {
+        return 'system';
     }
 }
