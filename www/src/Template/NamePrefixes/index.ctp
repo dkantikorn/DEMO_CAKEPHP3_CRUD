@@ -14,9 +14,9 @@
         <ul class="side-nav">
             <li class="heading"><?php echo __('Actions'); ?></li>
             <li><?php echo $this->Html->link(__('New Name Prefix'), ['action' => 'add']); ?></li>
-                <li><?php echo $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']); ?></li>
+            <li><?php echo $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']); ?></li>
             <li><?php echo $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']); ?></li>
-            </ul>
+        </ul>
     </nav>
 </div>
 <div class="container">
@@ -25,22 +25,22 @@
         <table cellpadding="0" cellspacing="0" class="table">
             <thead>
                 <tr>
-                        <th scope="col"><?php echo $this->Paginator->sort('id'); ?></th>
-                        <th scope="col"><?php echo $this->Paginator->sort('name'); ?></th>
-                        <th scope="col"><?php echo $this->Paginator->sort('name_eng'); ?></th>
-                        <th scope="col"><?php echo $this->Paginator->sort('long_name'); ?></th>
-                        <th scope="col"><?php echo $this->Paginator->sort('status'); ?></th>
-                        <th scope="col"><?php echo $this->Paginator->sort('create_uid'); ?></th>
-                        <th scope="col"><?php echo $this->Paginator->sort('update_uid'); ?></th>
-                        <th scope="col"><?php echo $this->Paginator->sort('created'); ?></th>
-                        <th scope="col"><?php echo $this->Paginator->sort('modified'); ?></th>
-                        <th scope="col"><?php echo $this->Paginator->sort('order_no'); ?></th>
-                        <th scope="col" class="actions"><?php echo __('Actions'); ?></th>
+                    <th scope="col"><?php echo $this->Paginator->sort('id'); ?></th>
+                    <th scope="col"><?php echo $this->Paginator->sort('name'); ?></th>
+                    <th scope="col"><?php echo $this->Paginator->sort('name_eng'); ?></th>
+                    <th scope="col"><?php echo $this->Paginator->sort('long_name'); ?></th>
+                    <th scope="col"><?php echo $this->Paginator->sort('status'); ?></th>
+                    <th scope="col"><?php echo $this->Paginator->sort('create_uid'); ?></th>
+                    <th scope="col"><?php echo $this->Paginator->sort('update_uid'); ?></th>
+                    <th scope="col"><?php echo $this->Paginator->sort('created'); ?></th>
+                    <th scope="col"><?php echo $this->Paginator->sort('modified'); ?></th>
+                    <th scope="col"><?php echo $this->Paginator->sort('order_no'); ?></th>
+                    <th scope="col" class="actions"><?php echo __('Actions'); ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($namePrefixes as $namePrefix): ?>
-                <tr>
+                    <tr>
                         <td><?php echo $this->Number->format($namePrefix->id); ?></td>
                         <td><?php echo h($namePrefix->name); ?></td>
                         <td><?php echo h($namePrefix->name_eng); ?></td>
@@ -52,14 +52,14 @@
                         <td><?php echo h($namePrefix->modified); ?></td>
                         <td><?php echo $this->Number->format($namePrefix->order_no); ?></td>
                         <td class="actions">
-                        <?php echo $this->Html->link(__('View'), ['action' => 'view', $namePrefix->id]); ?>
-                        <?php echo $this->Html->link(__('Edit'), ['action' => 'edit', $namePrefix->id]); ?>
-                        <?php echo $this->Form->postLink(__('Delete'), ['action' => 'delete', $namePrefix->id], ['confirm' => __('Are you sure you want to delete # {0}?', $namePrefix->id)]); ?>
-                    </td>
-                </tr>
+                            <?php echo $this->Html->link(__('View'), ['action' => 'view', $namePrefix->id], ['class' => 'btn btn-sm btn-primary btn-rounded waves-effect waves-light']); ?>
+                            <?php echo $this->Html->link(__('Edit'), ['action' => 'edit', $namePrefix->id], ['class' => 'btn btn-sm btn-warning btn-rounded waves-effect waves-light']); ?>
+                            <?php echo $this->Form->postLink(__('Delete'), ['action' => 'delete', $namePrefix->id], ['confirm' => __('Are you sure you want to delete # {0}?', $namePrefix->id), 'class' => 'btn btn-sm btn-danger btn-rounded waves-effect waves-light confirmModal action-delete']); ?>
+                        </td>
+                    </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <?php echo $this->element('common/paginator');?>
+        <?php echo $this->element('common/paginator'); ?>
     </div>
 </div>
