@@ -10,7 +10,12 @@
         <table class="table table-striped">
             <tr>
                 <th scope="row"><?php echo __('Faculty'); ?></th>
-                <td><?php echo $user->has('faculty') ? $this->Html->link($user->faculty->name, ['controller' => 'Faculties', 'action' => 'view', $user->faculty->id]) : '' ?></td>
+                <td><?php 
+                
+                
+//                echo $user->full_name;exit;
+//                echo $user->fullName;exit;
+                echo $user->has('faculty') ? $this->Html->link($user->faculty->name, ['controller' => 'Faculties', 'action' => 'view', $user->faculty->id]) : '' ?></td>
             </tr>
             <tr>
                 <th scope="row"><?php echo __('Role'); ?></th>

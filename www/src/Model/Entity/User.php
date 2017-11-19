@@ -39,6 +39,11 @@ use Cake\ORM\Entity;
  */
 class User extends Entity {
 
+    protected function _getFullName()
+    {
+        return $this->first_name . '  ' . $this->last_name;
+    }
+    
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -107,7 +112,7 @@ class User extends Entity {
      * @param type $userId
      * @return type
      */
-    public function isOwnedBy($articleId, $userId) {
+    protected function isOwnedBy($articleId, $userId) {
         return $this->exists(['id' => $articleId, 'user_id' => $userId]);
     }
 
