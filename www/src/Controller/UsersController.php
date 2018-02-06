@@ -93,6 +93,7 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $tmpUpload = $this->uploadFiles('upload/profile', $this->request->data['picture_path']);
             $this->request->data['picture_path'] = $tmpUpload['uploadPaths'][0];
+            $this->request->data['create_uid'] = $this->getAuthUserId();
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
@@ -122,6 +123,7 @@ class UsersController extends AppController {
         if ($this->request->is(['patch', 'post', 'put'])) {
             $tmpUpload = $this->uploadFiles('upload/profile', $this->request->data['picture_path']);
             $this->request->data['picture_path'] = $tmpUpload['uploadPaths'][0];
+            $this->request->data['update_uid'] = $this->getAuthUserId();
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));

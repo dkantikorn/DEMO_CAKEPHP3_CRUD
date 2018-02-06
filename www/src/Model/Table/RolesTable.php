@@ -81,13 +81,13 @@ class RolesTable extends Table {
         return $validator;
     }
 
-    /**
-     *
-     * Returns the database connection name to use by default.
-     * @author  pakgon.Ltd
-     * @return string
-     */
-    public static function defaultConnectionName() {
-        return 'system';
-    }
+//    /**
+//     *
+//     * Returns the database connection name to use by default.
+//     * @author  pakgon.Ltd
+//     * @return string
+//     */
+//    public static function defaultConnectionName() {
+//        return 'system';
+//    }
 }

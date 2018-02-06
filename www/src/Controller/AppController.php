@@ -42,7 +42,7 @@ class AppController extends Controller {
         'Html' => ['className' => 'Bootstrap.Html'],
         'Modal' => ['className' => 'Bootstrap.Modal'],
         'Navbar' => ['className' => 'Bootstrap.Navbar', 'autoActiveLink' => true],
-        'Paginator' => ['className' => 'Bootstrap.Paginator','templates' => 'pakgon-paginator'],
+        'Paginator' => ['className' => 'Bootstrap.Paginator', 'templates' => 'pakgon-paginator'],
         'Panel' => ['className' => 'Bootstrap.Panel']
     ];
 
@@ -125,7 +125,7 @@ class AppController extends Controller {
             mkdir($folder_url);
         }
 
-        
+
         //Bould new path if $itemId to be not null
         if ($itemId) {
             $folder_url = WWW_ROOT . $folder . '/' . $itemId;
@@ -228,8 +228,41 @@ class AppController extends Controller {
      * @author  sarawutt.b
      * @return  string uuid in version
      */
-    function UUID() {
+    public function UUID() {
         return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x', mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0x0fff) | 0x4000, mt_rand(0, 0x3fff) | 0x8000, mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff));
+    }
+
+    /**
+     * 
+     * Function get for current session user authentication full name
+     * @author  sarawutt.b
+     * @since   2018/02/06
+     * @return  string of authentication user full name
+     */
+    protected function getAuthFullname() {
+        return $this->readAuth('Auth.User.first_name') . ' ' . $this->readAuth('Auth.User.last_name');
+    }
+
+    /**
+     * 
+     * Function get for current session user authentication user id
+     * @author  sarawutt.b
+     * @since   2018/02/06
+     * @return  string of authentication user id
+     */
+    protected function getAuthUserId() {
+        return $this->readAuth('Auth.User.id');
+    }
+
+    /**
+     * 
+     * Function get for current session with user authentication
+     * @author  sarawutt.b
+     * @since   2018/02/06
+     * @return  string of authentication session info
+     */
+    protected function readAuth($name = null) {
+        return $this->request->session()->read($name);
     }
 
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -12,7 +13,6 @@ use App\Controller\AppController;
  * @since   2017-11-17 11:56:27
  * @license Pakgon.Ltd
  */
- 
 class RolesController extends AppController {
 
     /**
@@ -60,6 +60,7 @@ class RolesController extends AppController {
     public function add() {
         $role = $this->Roles->newEntity();
         if ($this->request->is('post')) {
+            $this->request->data['create_uid'] = $this->getAuthUserId();
             $role = $this->Roles->patchEntity($role, $this->request->getData());
             if ($this->Roles->save($role)) {
                 $this->Flash->success(__('The role has been saved.'));
@@ -67,7 +68,7 @@ class RolesController extends AppController {
             }
             $this->Flash->error(__('The role could not be saved. Please, try again.'));
         }
-        
+
         $this->set(compact('role'));
         $this->set('_serialize', ['role']);
     }
@@ -87,6 +88,7 @@ class RolesController extends AppController {
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
+            $this->request->data['update_uid'] = $this->getAuthUserId();
             $role = $this->Roles->patchEntity($role, $this->request->getData());
             if ($this->Roles->save($role)) {
                 $this->Flash->success(__('The role has been saved.'));
@@ -94,7 +96,7 @@ class RolesController extends AppController {
             }
             $this->Flash->error(__('The role could not be saved. Please, try again.'));
         }
-        
+
         $this->set(compact('role'));
         $this->set('_serialize', ['role']);
     }
@@ -117,7 +119,8 @@ class RolesController extends AppController {
         } else {
             $this->Flash->error(__('The role could not be deleted. Please, try again.'));
         }
-        
+
         return $this->redirect(['action' => 'index']);
     }
+
 }
