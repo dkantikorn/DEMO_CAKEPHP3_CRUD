@@ -45,6 +45,21 @@ class AppController extends Controller {
         'Paginator' => ['className' => 'Bootstrap.Paginator', 'templates' => 'pakgon-paginator'],
         'Panel' => ['className' => 'Bootstrap.Panel']
     ];
+    public $_server_domain = null;
+    public $_server_port = null;
+
+    /**
+     * @var L10n multi language
+     */
+    public $L10n = null;
+
+    /**
+     * @var string server protocal for acl control
+     */
+    public $_server_protocal = NULL;
+    public $_session_user_id = null;
+    public $_session_role_id = null;
+    public $select_empty_msg = '---- please select ----';
 
     /**
      * 
@@ -263,6 +278,24 @@ class AppController extends Controller {
      */
     protected function readAuth($name = null) {
         return $this->request->session()->read($name);
+    }
+
+    /**
+     * Function get for select empty option
+     * @author sarawutt.b
+     * @return array() with emply select default option
+     */
+    public function getEmptySelect() {
+        return array('' => __($this->select_empty_msg));
+    }
+
+    /**
+     * Function get current session language
+     * @author sarawutt.b
+     * @return string of current language
+     */
+    public function getCurrentLanguage() {
+        return $this->Session->read('SessionLanguage');
     }
 
 }
