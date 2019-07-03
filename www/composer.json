@@ -14,7 +14,9 @@
         "holt59/cakephp3-bootstrap-helpers": "dev-master",
         "admad/cakephp-jwt-auth": "^2.1",
         "almasaeed2010/adminlte": "^2.3",
-        "FortAwesome/Font-Awesome": "*"
+        "FortAwesome/Font-Awesome": "*",
+        "phpoffice/phpexcel": "^1.8",
+        "phpoffice/phpspreadsheet": "^1.8"
     },
     "require-dev": {
         "psy/psysh": "@stable",

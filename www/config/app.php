@@ -11,13 +11,12 @@ return [
      * true: Errors and warnings shown.
      */
     'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
-    
     /**
      * 
      * Default for I18n Translate setting to thai lang
      * @author sarawutt.b
      */
-    'defaultLocale'=> env('APP_DEFAULT_LOCALE', 'th_TH'),
+    'defaultLocale' => env('APP_DEFAULT_LOCALE', 'th_TH'),
     /**
      * Configure basic information about the application.
      *
@@ -249,7 +248,6 @@ return [
             //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
             'url' => env('DATABASE_URL', null),
         ],
-        
         'system' => [
             'className' => 'Cake\Database\Connection',
             'driver' => 'Cake\Database\Driver\Postgres',
@@ -260,8 +258,15 @@ return [
             'database' => 'demo_cakephp3_crud',
             'schema' => 'system'
         ],
-        
-        
+        'master' => [
+            'className' => 'Cake\Database\Connection',
+            'driver' => 'Cake\Database\Driver\Mysql',
+            'persistent' => false,
+            'host' => 'localhost',
+            'username' => 'root',
+            'password' => 'password',
+            'database' => 'pble_schools',
+        ],
         /**
          * The test connection is used during the test suite.
          */
