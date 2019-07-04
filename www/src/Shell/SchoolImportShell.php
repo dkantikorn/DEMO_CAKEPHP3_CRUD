@@ -9,6 +9,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Cake\Log\Log;
 use App\Controller\Component\CrazyLogComponent;
 use Cake\Controller\ComponentRegistry;
+use SebastianBergmann\Timer\Timer as PHP_Timer;
 
 set_time_limit(0);
 ini_set('max_execution_time', 0);
@@ -26,6 +27,7 @@ class SchoolImportShell extends Shell {
     private $CrazyLog = null;
     private $LOG_PATH = null;
     private $CURRENT_PATH = null;
+    private $CUSTOMER_REF = null;
 
     public function initialize() {
         parent::initialize();
@@ -105,27 +107,28 @@ class SchoolImportShell extends Shell {
         $key = array_keys($params);
         $val = array_values($params);
         //sanitation needed!
-        $query = "INSERT INTO $tablename (" . implode(', ', $key) . ") " . "VALUES ('" . implode("', '", $val) . "')";
+        $query = "INSERT INTO $tablename (" . implode(', ', $key) . ") " . "VALUES ('" . implode("', '", $val) . "');";
         return $query;
     }
 
     private function importSchoolData() {
-        $this->out('========================    PROJECT SCHOOL IMPORT    ========================');
+        //$this->out('========================    PROJECT SCHOOL IMPORT    ========================');
         $path = dirname(__FILE__) . DS . 'import' . DS . 'schools';
         $file_mimes = array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         $this->listAllSchoolFile($path);
         $this->loadModel('PersonalInfos');
+        $this->loadModel('ActivityLogs');
         $countFiles = count($this->resultFiles, true) - count($this->resultFiles);
         if ($countFiles > 0) {
 
             $this->out("PersonalInfo:: read {$countFiles} files.");
 
-            Log::debug("======================      Personal Information Import     ======================");
-            Log::debug("======================      Insert into table personal_infos     ======================");
-            Log::debug("PersonalInfo:: read {$countFiles} files.");
-            Log::debug("PersonalInfo:: read all of {$countFiles} list file :: " . json_encode($this->resultFiles));
-
-
+//            Log::debug("======================      Personal Information Import     ======================");
+//            Log::debug("======================      Insert into table personal_infos     ======================");
+//            Log::debug("PersonalInfo:: read {$countFiles} files.");
+//            Log::debug("PersonalInfo:: read all of {$countFiles} list file :: " . json_encode($this->resultFiles));
+//
+//            $this->ActivityLogs->logInfo();
 //            foreach ($this->resultFiles as $path => $filename) {
             foreach ($this->resultFiles as $path => $fileList) {
                 foreach ($fileList as $currentPath => $filename) {
@@ -144,9 +147,13 @@ class SchoolImportShell extends Shell {
                             $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
                         }
 
-                        $this->out("PersonalInfo:: read current file name :: " . $readCurrent);
-                        Log::debug("PersonalInfo:: read current file name :: " . $readCurrent);
-                        $spreadsheet = $reader->load($path . DS . $filename);
+                        //$this->out("PersonalInfo:: read current file name :: " . $readCurrent);
+                        //Log::debug("PersonalInfo:: read current file name :: " . $readCurrent);
+
+
+                        $this->ActivityLogs->logInfo("PersonalInfo", "read current file name", str_replace(DS, DS . DS, $readCurrent));
+
+                        $spreadsheet = $reader->load($readCurrent);
 
                         //var_dump($spreadsheet);
                         //Get for sheet count
@@ -176,7 +183,7 @@ class SchoolImportShell extends Shell {
                             $v = $this->trimAllData($v);
 
                             $data = [];
-                            $data['card_no'] = $v[0];
+                            $this->CUSTOMER_REF = $data['card_no'] = $v[0];
                             $data['ref_no'] = $v[1];
                             $data['name_prefix'] = $v[2];
                             $data['first_name'] = $v[3];
@@ -206,15 +213,17 @@ class SchoolImportShell extends Shell {
                             $personalInfo = $this->PersonalInfos->newEntity();
                             $personalInfo = $this->PersonalInfos->patchEntity($personalInfo, $data);
                             if ($this->PersonalInfos->save($personalInfo)) {
-                                $this->out('SAVE SUCCESS:: save personal infomation success with id :: ' . $personalInfo->id);
-                                Log::debug("PersonalInfo:: save success:: with id :: " . $personalInfo->id);
+                                $currSaveStr = $personalInfo->id . '/' . $countFiles;
+                                $this->out('SAVE SUCCESS:: save personal infomation success with id :: ' . $currSaveStr);
+                                //Log::debug("PersonalInfo:: save success:: with id :: " . $personalInfo->id);
+                                $this->ActivityLogs->logInfo('PersonalInfo', "save success with id {$currSaveStr}");
                             } else {
                                 $this->out("SAVE FAILED:: save error:: ");
                                 $sql = $this->generateInsertSQL('personal_infos', $data);
-                                Log::debug("PersonalInfo:: save error:: " . $sql);
+                                //Log::debug("PersonalInfo:: save error:: " . $sql);
                                 $this->CrazyLog->WRITE_LOG($this->LOG_PATH, $sql, 'insert_personal_infos_error.log');
+                                $this->ActivityLogs->logError('PersonalInfo', "save error", $sql);
                             }
-
                             unset($sheetData[$k]);
                         }
 
@@ -223,47 +232,14 @@ class SchoolImportShell extends Shell {
 //                        Log::debug("Read Excel:: First row:: " . json_encode($sheetData[0]));
 //                        Log::debug("Read Excel:: Seccond row:: " . json_encode($sheetData[1]));
                     } catch (\Exception $ex) {
-                        Log::error("PersonalInfo:: error exception:: " . json_encode($ex));
+                        $msg = json_encode($ex);
+                        //Log::error("PersonalInfo:: error exception:: " . $msg);
+                        $this->ActivityLogs->logError('PersonalInfo', "error exception", $msg);
                         continue;
                     }
                 }
             }
         }
-    }
-
-    private function generateSQLInsertEx() {
-
-        $data = array(
-            'card_no' => '3100101075727',
-            'ref_no' => '51276',
-            'name_prefix' => 'นาง',
-            'first_name' => 'สุภาพร',
-            'last_name' => 'ธวัชราภรณ์',
-            'gender' => 'หญิง',
-            'date_of_birth' => '4/10/2510',
-            'marital_status' => 'อื่นๆ',
-            'blood_group' => '',
-            'physical_status' => 'ปกติ',
-            'issue_date' => '5/16/2551',
-            'start_date' => '5/16/2551',
-            'school' => 'รร. เพี้ยนพินอนุสรณ์',
-            'position_no' => 'ขนง.พพ.28(บ)',
-            'position_name' => 'รองผู้อำนวยการสถานศึกษา',
-            'position_level' => 'คศ.3',
-            'phone_no' => '[<=99999999]0-2370-1003',
-            'father_name_prefix' => 'นาย',
-            'father_first_name' => 'อาโก้ว',
-            'father_last_name' => 'แซ่เตีย',
-            'mother_name_prefix' => 'นาง',
-            'mother_first_name' => 'สมจิตร',
-            'mother_last_name' => 'เสริมรัฐ',
-            'spouse_name_prefix' => 'นาย',
-            'spouse_first_name' => 'สุพล',
-            'spouse_last_name' => 'ธวัชราภรณ์',
-        );
-
-
-        return $this->generateInsertSQL('personal_infos', $data);
     }
 
     /**
@@ -272,11 +248,11 @@ class SchoolImportShell extends Shell {
      * @return bool|int|null Success or error code.
      */
     public function main() {
+        $timer = new PHP_Timer();
+        $timer->start();
         $this->out('========================    PROJECT SCHOOL IMPORT    ========================');
         $this->importSchoolData();
-
-//        $sql = $this->generateSQLInsertEx();
-//        $this->CrazyLog->WRITE_LOG(dirname(__FILE__) . DS . 'logs' . DS, $sql, 'personal_infos.log');
+        $this->out("Totoal process time\n" . $timer->resourceUsage());
     }
 
 }

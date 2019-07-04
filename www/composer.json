@@ -16,7 +16,8 @@
         "almasaeed2010/adminlte": "^2.3",
         "FortAwesome/Font-Awesome": "*",
         "phpoffice/phpexcel": "^1.8",
-        "phpoffice/phpspreadsheet": "^1.8"
+        "phpoffice/phpspreadsheet": "^1.8",
+        "phpunit/php-timer": "^2.1"
     },
     "require-dev": {
         "psy/psysh": "@stable",
