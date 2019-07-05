@@ -29,11 +29,14 @@ class SchoolImportShell extends Shell {
     private $CURRENT_PATH = null;
     private $CUSTOMER_REF = null;
     private $COUNT_ALL_FILES = 0;
+    private $UNREAD_LOG_PATH = null;
+    private $SELFDIR = null;
 
     public function initialize() {
         parent::initialize();
         $this->CrazyLog = new CrazyLogComponent(new ComponentRegistry(), []);
-        $this->CURRENT_PATH = dirname(__FILE__);
+        //$this->CURRENT_PATH = dirname(__FILE__);
+        $this->SELFDIR = $this->CURRENT_PATH = __DIR__;
         $this->LOG_PATH = $this->CURRENT_PATH . DS . 'logs' . DS;
         $this->loadModel('ActivityLogs');
     }
@@ -49,14 +52,17 @@ class SchoolImportShell extends Shell {
 
         foreach ($ffs as $ff) {
             //echo '<li>' . $ff;
-            if (is_dir($dir . DS . $ff)) {
-                $this->lastCurrentPath = $dir . DS . $ff;
+            $currentPath = $dir . DS . $ff;
+            if (is_dir($currentPath)) {
+                $this->lastCurrentPath = $currentPath;
                 $this->listFolderFiles($this->lastCurrentPath);
             } else {
 
                 //Filter out for tmp save excel temp file
                 if (strpos($ff, '~$') !== false) {
-                    Log::debug("Read Excel:: Can not to read file name:: " . $ff);
+                    Log::debug("Read Excel:: Can not to read file name:: " . $currentPath);
+                    $this->ActivityLogs->logError("ReadFile", "can not to read file", str_replace(DS, DS . DS, $currentPath));
+                    $this->CrazyLog->WRITE_LOG($this->LOG_PATH, $currentPath, 'cannot_read_error.log');
                 } else {
                     $this->resultFiles[trim($dir)][] = trim($ff);
                 }
@@ -311,9 +317,9 @@ class SchoolImportShell extends Shell {
                     $personalInfo = $this->PersonalInfos->patchEntity($personalInfo, $data);
                     if ($this->PersonalInfos->save($personalInfo)) {
                         $currSaveStr = $personalInfo->id . '/' . $this->COUNT_ALL_FILES;
-                        $this->out('PersonalInfo:: insert successfully with id :: ' . $currSaveStr);
+                        $this->out('PersonalInfo:: save success with id :: ' . $currSaveStr);
                         //Log::debug("PersonalInfo:: save success:: with id :: " . $personalInfo->id);
-                        $this->ActivityLogs->logInfo('PersonalInfo', "insert successfully with id {$currSaveStr}");
+                        $this->ActivityLogs->logInfo('PersonalInfo', "save success with id {$currSaveStr}");
                     } else {
                         $this->out("PersonalInfo:: insert failed error:: ");
                         $sql = $this->generateInsertSQL('personal_infos', $data);
@@ -330,12 +336,23 @@ class SchoolImportShell extends Shell {
         }
     }
 
+    private function moveFile() {
+        $sourceFile = str_replace(DS, DS . DS, "D:\xampp7\htdocs\DEMO_CAKEPHP3_CRUD\www\src\Shell\import\schools\1เขตคลองเตย\ผุ้บริหารสนข.คลองเตย\~$3530101026862อิง.xlsx");
+        //$sourceFile = "D:\\xampp7\\htdocs\\DEMO_CAKEPHP3_CRUD\\www\\src\\Shell\\import\\schools\\1เขตคลองเตย\\ผุ้บริหารสนข.คลองเตย\\cannotread.xlsx";
+        //$source_file = 'foo/image.jpg';
+        $destinationPath = __DIR__ . DS . 'import' . DS . 'backup' . DS . 'unread-files' . DS;
+        //dd($destinationPath);
+        rename($sourceFile, $destinationPath . pathinfo($sourceFile, PATHINFO_BASENAME));
+    }
+
     /**
      * main() method.
      *
      * @return bool|int|null Success or error code.
      */
     public function main() {
+//        $this->moveFile();
+//        exit;
         $timer = new PHP_Timer();
         $timer->start();
 
@@ -346,6 +363,9 @@ class SchoolImportShell extends Shell {
         $this->listAllSchoolFile($importPath);
 //        $countFiles = count($this->resultFiles, true) - count($this->resultFiles);
         $this->COUNT_ALL_FILES = count($this->resultFiles, true) - count($this->resultFiles);
+
+//        Log::debug('All fire name list:: ' . json_encode($this->resultFiles));
+//        exit;
         if ($this->COUNT_ALL_FILES > 0) {
 
             $this->out("PersonalInfo:: read {$this->COUNT_ALL_FILES} files.");
@@ -375,7 +395,7 @@ class SchoolImportShell extends Shell {
                         }
 
                         //$this->out("PersonalInfo:: read current file name :: " . $readCurrent);
-                        //Log::debug("PersonalInfo:: read current file name :: " . $readCurrent);
+                        Log::debug("PersonalInfo:: read current file name :: " . $readCurrent);
 
 
                         $this->ActivityLogs->logInfo("Main", "read current file name", str_replace(DS, DS . DS, $readCurrent));
@@ -394,7 +414,7 @@ class SchoolImportShell extends Shell {
 //                $sheetData = $spreadsheet->getActiveSheet()->toArray();
                         //Get sheet by sheet name
                         //Import master Personal data
-                        $personalInfos = $spreadsheet->getSheetByName("ข้อมูลพื้นฐาน")->toArray();
+                        $personalInfos = @$spreadsheet->getSheetByName("ข้อมูลพื้นฐาน")->toArray();
 //                        $this->importPersonalInfos($spreadsheet->getSheetByName("ข้อมูลพื้นฐาน")->toArray());
                         $this->importPersonalInfos($personalInfos);
                         $spreadsheet->disconnectWorksheets();
