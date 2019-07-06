@@ -13,7 +13,16 @@ use SebastianBergmann\Timer\Timer as PHP_Timer;
 
 set_time_limit(0);
 ini_set('max_execution_time', 0);
-ini_set("memory_limit", "-1");
+ini_set("memory_limit", -1);
+
+//function exceptions_error_handler($severity, $message, $filename, $lineno) {
+//    if (error_reporting() == 0) {
+//        return;
+//    }
+//    if (error_reporting() & $severity) {
+//        throw new ErrorException($message, 0, $severity, $filename, $lineno);
+//    }
+//}
 
 /**
  * Hello shell command.
@@ -62,7 +71,7 @@ class SchoolImportShell extends Shell {
                 if (strpos($ff, '~$') !== false) {
                     Log::debug("Read Excel:: Can not to read file name:: " . $currentPath);
                     $this->ActivityLogs->logError("ReadFile", "can not to read file", str_replace(DS, DS . DS, $currentPath));
-                    $this->CrazyLog->WRITE_LOG($this->LOG_PATH, $currentPath, 'cannot_read_error.log');
+                    $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $currentPath, 'cannot_read_error.log');
                 } else {
                     $this->resultFiles[trim($dir)][] = trim($ff);
                 }
@@ -91,7 +100,7 @@ class SchoolImportShell extends Shell {
      * @return  []
      * @since   2013-02-16
      */
-    public function trimAllData($data = null) {
+    public function trimAllData(&$data = null) {
         $return_data = [];
         if (!is_array($data)) {
             $data = array($data);
@@ -229,7 +238,7 @@ class SchoolImportShell extends Shell {
 //                                $this->out("SAVE FAILED:: save error:: ");
 //                                $sql = $this->generateInsertSQL('personal_infos', $data);
 //                                //Log::debug("PersonalInfo:: save error:: " . $sql);
-//                                $this->CrazyLog->WRITE_LOG($this->LOG_PATH, $sql, 'insert_personal_infos_error.log');
+//                                $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, 'insert_personal_infos_error.log');
 //                                $this->ActivityLogs->logError('PersonalInfo', "save error", $sql);
 //                            }
 //                            unset($sheetData[$k]);
@@ -262,6 +271,9 @@ class SchoolImportShell extends Shell {
 //        $this->out("Totoal process time\n" . $timer->resourceUsage());
 //    }
 
+    private $countSaveSuccess = 0;
+    private $countSaveFailed = 0;
+
     /**
      * 
      * Import personal data (ข้อมูลพื้นฐาน)
@@ -269,6 +281,7 @@ class SchoolImportShell extends Shell {
      */
     private function importPersonalInfos(&$datas) {
         if (is_array($datas) && (count($datas) > 0)) {
+            $data = [];
             try {
 
                 $this->loadModel('PersonalInfos');
@@ -279,70 +292,113 @@ class SchoolImportShell extends Shell {
                         continue;
                     }
 
+                    $v = $this->trimAllData($v);
                     if (empty(array_filter($v))) {
                         continue;
                     }
 
-                    $v = $this->trimAllData($v);
 
                     $data = [];
-                    $this->CUSTOMER_REF = $data['card_no'] = $v[0];
-                    $data['ref_no'] = $v[1];
-                    $data['name_prefix'] = $v[2];
-                    $data['first_name'] = $v[3];
-                    $data['last_name'] = $v[4];
-                    $data['gender'] = $v[5];
-                    $data['date_of_birth'] = $v[6];
-                    $data['marital_status'] = $v[7];
-                    $data['blood_group'] = $v[8];
-                    $data['physical_status'] = $v[9];
-                    $data['issue_date'] = $v[10];
-                    $data['start_date'] = $v[11];
-                    $data['school'] = $v[12];
-                    $data['position_no'] = $v[13];
-                    $data['position_name'] = $v[14];
-                    $data['position_level'] = $v[15];
-                    $data['phone_no'] = $v[16];
-                    $data['father_name_prefix'] = $v[17];
-                    $data['father_first_name'] = $v[18];
-                    $data['father_last_name'] = $v[19];
-                    $data['mother_name_prefix'] = $v[20];
-                    $data['mother_first_name'] = $v[21];
-                    $data['mother_last_name'] = $v[22];
-                    $data['spouse_name_prefix'] = $v[23];
-                    $data['spouse_first_name'] = $v[24];
-                    $data['spouse_last_name'] = $v[25];
+                    $this->CUSTOMER_REF = $data['card_no'] = @$v[0];
+                    $data['ref_no'] = @$v[1];
+                    $data['name_prefix'] = @$v[2];
+                    $data['first_name'] = @$v[3];
+                    $data['last_name'] = @$v[4];
+                    $data['gender'] = @$v[5];
+                    $data['date_of_birth'] = @$v[6];
+                    $data['marital_status'] = @$v[7];
+                    $data['blood_group'] = @$v[8];
+                    $data['physical_status'] = @$v[9];
+                    $data['issue_date'] = @$v[10];
+                    $data['start_date'] = @$v[11];
+                    $data['school'] = @$v[12];
+                    $data['position_no'] = @$v[13];
+                    $data['position_name'] = @$v[14];
+                    $data['position_level'] = @$v[15];
+                    $data['phone_no'] = @$v[16];
+                    $data['father_name_prefix'] = @$v[17];
+                    $data['father_first_name'] = @$v[18];
+                    $data['father_last_name'] = @$v[19];
+                    $data['mother_name_prefix'] = @$v[20];
+                    $data['mother_first_name'] = @$v[21];
+                    $data['mother_last_name'] = @$v[22];
+                    $data['spouse_name_prefix'] = @$v[23];
+                    $data['spouse_first_name'] = @$v[24];
+                    $data['spouse_last_name'] = @$v[25];
 
+
+                    //Log::debug("PersonalInfo:: Data" . json_encode($data));
                     $personalInfo = $this->PersonalInfos->newEntity();
                     $personalInfo = $this->PersonalInfos->patchEntity($personalInfo, $data);
                     if ($this->PersonalInfos->save($personalInfo)) {
+                        $this->countSaveSuccess++;
+
                         $currSaveStr = $personalInfo->id . '/' . $this->COUNT_ALL_FILES;
-                        $this->out('PersonalInfo:: save success with id :: ' . $currSaveStr);
+                        //$currSaveStr = $k . '/' . $this->COUNT_ALL_FILES;
+                        //$this->out('PersonalInfo:: save success with id :: ' . $currSaveStr);
                         //Log::debug("PersonalInfo:: save success:: with id :: " . $personalInfo->id);
                         $this->ActivityLogs->logInfo('PersonalInfo', "save success with id {$currSaveStr}");
                     } else {
+                        $this->countSaveFailed++;
+
                         $this->out("PersonalInfo:: insert failed error:: ");
                         $sql = $this->generateInsertSQL('personal_infos', $data);
                         //Log::debug("PersonalInfo:: save error:: " . $sql);
-                        $this->CrazyLog->WRITE_LOG($this->LOG_PATH, $sql, 'insert_personal_infos_error.log');
+                        $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, 'insert_personal_infos_error.log');
                         $this->ActivityLogs->logError('PersonalInfo', "save error", $sql);
                     }
-                }
+                }//End foreach for save Personal infomation
+                $strSummary = "PersonalInfo:: SUMMARY:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}";
+
+                $this->out($strSummary);
+                $this->ActivityLogs->logInfo('SUMMARY', "insert personal_infos summary:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
+                Log::debug($strSummary);
             } catch (\Exception $ex) {
                 $msg = json_encode($ex);
                 Log::error("PersonalInfo:: error exception:: " . $msg);
                 $this->ActivityLogs->logError('PersonalInfo', "error exception", $msg);
+
+                $sql = $this->generateInsertSQL('personal_infos', $data);
+                $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, 'insert_personal_infos_error.log');
+                $this->ActivityLogs->logError('PersonalInfo', "error exception", $sql);
             }
         }
     }
 
-    private function moveFile() {
-        $sourceFile = str_replace(DS, DS . DS, "D:\xampp7\htdocs\DEMO_CAKEPHP3_CRUD\www\src\Shell\import\schools\1เขตคลองเตย\ผุ้บริหารสนข.คลองเตย\~$3530101026862อิง.xlsx");
-        //$sourceFile = "D:\\xampp7\\htdocs\\DEMO_CAKEPHP3_CRUD\\www\\src\\Shell\\import\\schools\\1เขตคลองเตย\\ผุ้บริหารสนข.คลองเตย\\cannotread.xlsx";
-        //$source_file = 'foo/image.jpg';
-        $destinationPath = __DIR__ . DS . 'import' . DS . 'backup' . DS . 'unread-files' . DS;
-        //dd($destinationPath);
+    /**
+      Make a nested path , creating directories down the path
+      Recursion !!
+     */
+    private function makePath($path) {
+        $dir = pathinfo($path, PATHINFO_DIRNAME);
+        if (is_dir($dir)) {
+            return true;
+        } else {
+            if ($this->makePath($dir)) {
+                if (mkdir($dir)) {
+                    chmod($dir, 0777);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private function moveFile($sourceFile, $destinationPath) {
+        $sourceFile = str_replace(DS, DS . DS, $sourceFile);
+        $this->makePath($destinationPath);
         rename($sourceFile, $destinationPath . pathinfo($sourceFile, PATHINFO_BASENAME));
+    }
+
+    private function moveFileSuccessQueues($sourceFile) {
+        $destinationPath = str_replace('schools', 'SUCCESS-QUEUES', $sourceFile);
+        return $this->moveFile($sourceFile, $destinationPath);
+    }
+
+    private function moveFileFailedQueues($sourceFile) {
+        $destinationPath = str_replace('schools', 'FAILED-QUEUES', $sourceFile);
+        return $this->moveFile($sourceFile, $destinationPath);
     }
 
     /**
@@ -351,6 +407,11 @@ class SchoolImportShell extends Shell {
      * @return bool|int|null Success or error code.
      */
     public function main() {
+        //$this->makePath(__DIR__ . DS . 'a/b/c/d/abc.zip');exit;
+//        $this->makePath("D:\\xampp7\\htdocs\\DEMO_CAKEPHP3_CRUD\\www\\src\\Shell\\import\\schools\\2เขตดินแดง(เสร็จแล้ว)\\ผู้บริหารสนข.ดินแดง\\sarawutt.b.xlsx");
+        //$this->moveFile("D:\\xampp7\\htdocs\\DEMO_CAKEPHP3_CRUD\\www\\src\\Shell\\import\\schools\\2เขตดินแดง(เสร็จแล้ว)\\ผู้บริหารสนข.ดินแดง\\sarawutt.b.xlsx");
+        //exit;
+        //$this->testTryNoti();exit;
 //        $this->moveFile();
 //        exit;
         $timer = new PHP_Timer();
@@ -381,8 +442,8 @@ class SchoolImportShell extends Shell {
                 foreach ($fileList as $filename) {
 
                     //Read all file data and insert
+                    $readCurrent = $path . DS . $filename;
                     try {
-                        $readCurrent = $path . DS . $filename;
                         if (!is_file($readCurrent)) {
                             continue;
                         }
@@ -396,9 +457,9 @@ class SchoolImportShell extends Shell {
 
                         //$this->out("PersonalInfo:: read current file name :: " . $readCurrent);
                         Log::debug("PersonalInfo:: read current file name :: " . $readCurrent);
-
-
                         $this->ActivityLogs->logInfo("Main", "read current file name", str_replace(DS, DS . DS, $readCurrent));
+
+                        //Load Excel file
                         $spreadsheet = $reader->load($readCurrent);
 
                         //var_dump($spreadsheet);
@@ -418,10 +479,13 @@ class SchoolImportShell extends Shell {
 //                        $this->importPersonalInfos($spreadsheet->getSheetByName("ข้อมูลพื้นฐาน")->toArray());
                         $this->importPersonalInfos($personalInfos);
                         $spreadsheet->disconnectWorksheets();
+                        //Move file to Success when finish
+                        $this->moveFileSuccessQueues($readCurrent);
                     } catch (\Exception $ex) {
                         $msg = json_encode($ex);
                         Log::error("Main:: error exception:: " . $msg);
                         $this->ActivityLogs->logError('Main', "error exception", $msg);
+                        $this->moveFileFailedQueues($readCurrent);
                         continue;
                     }
                 }

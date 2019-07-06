@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -36,8 +37,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  */
-class PersonalInfo extends Entity
-{
+class PersonalInfo extends Entity {
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -75,7 +75,9 @@ class PersonalInfo extends Entity
         'spouse_name_prefix' => true,
         'spouse_first_name' => true,
         'spouse_last_name' => true,
+        'recheck' => true,
         'created' => true,
         'modified' => true
     ];
+
 }
