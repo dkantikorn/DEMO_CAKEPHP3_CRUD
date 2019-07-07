@@ -76,6 +76,8 @@ class PersonalInfo extends Entity {
         'spouse_first_name' => true,
         'spouse_last_name' => true,
         'recheck' => true,
+        'source_file' => true,
+        'remark' => true,
         'created' => true,
         'modified' => true
     ];

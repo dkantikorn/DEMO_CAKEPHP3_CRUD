@@ -17,7 +17,8 @@
         "FortAwesome/Font-Awesome": "*",
         "phpoffice/phpexcel": "^1.8",
         "phpoffice/phpspreadsheet": "^1.8",
-        "phpunit/php-timer": "^2.1"
+        "phpunit/php-timer": "^2.1",
+        "box/spout": "^3.0"
     },
     "require-dev": {
         "psy/psysh": "@stable",
