@@ -318,7 +318,10 @@ class SchoolImportShell extends Shell {
     private function moveFile($sourceFile, $destinationPath) {
         $sourceFile = str_replace(DS, DS . DS, $sourceFile);
         $this->makePath($destinationPath);
-        rename($sourceFile, $destinationPath . pathinfo($sourceFile, PATHINFO_BASENAME));
+
+        //may be duplicate name
+        //rename($sourceFile, $destinationPath . pathinfo($sourceFile, PATHINFO_BASENAME));
+        rename($sourceFile, $destinationPath);
     }
 
     private function moveFileSuccessQueues($sourceFile) {
