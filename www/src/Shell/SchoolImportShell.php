@@ -19,7 +19,11 @@ use Cake\Log\Log;
 use App\Controller\Component\CrazyLogComponent;
 use Cake\Controller\ComponentRegistry;
 use SebastianBergmann\Timer\Timer as PHP_Timer;
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Box\Spout\Reader\ReaderFactory;
+use Box\Spout\Common\Type;
 
+//use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 //use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 
 set_time_limit(0);
@@ -124,6 +128,54 @@ class SchoolImportShell extends Shell {
     private $countSaveSuccess = 0;
     private $countSaveFailed = 0;
 
+    function testSpoutReadLargeExcelFile() {
+
+        $this->out("testSpoutReadLargeExcelFile()");
+//        $filePath = 'D:\xampp7\htdocs\DEMO_CAKEPHP3_CRUD\www\src\Shell\import\schools\โรงเรียนพรหมราษฎร์รังสรรค์ Eok\บางบอน_รร.พรหมราษฎร์รังสรรค์_3740100233226_45721_นงนุช_เจนจิรา.xlsx';
+        $filePath = 'D:\xampp7\htdocs\DEMO_CAKEPHP3_CRUD\www\src\Shell\import\schools\โรงเรียนพรหมราษฎร์รังสรรค์ Eok\รหัส Beacon งาน Aquarium_URL.xlsx';
+        //$reader = ReaderEntityFactory::createReaderFromFile($filePath);
+        $reader = ReaderEntityFactory::createXLSXReader();
+        $reader->open($filePath);
+
+        foreach ($reader->getSheetIterator() as $sheet) {
+            // $this->out("sheet");
+            debug($sheet->getName());
+            //Log::debug("Sheet: " . json_encode($sheet));
+
+            if ($sheet->getName() == "3ตำแหน่ง-เงินเดือน") {
+                foreach ($sheet->getRowIterator() as $row) {
+                    $this->out("row");
+                    //Log::debug("row: " . json_encode($row));
+
+                    debug($row[1]);
+                    // do stuff with the row
+//                    $cells = $row->getCells();
+//                    $this->out("cells");
+//                    Log::debug("cell: " . json_encode($cells));
+                }
+            }
+            
+            if ($sheet->getName() == "ปลา1 + 2") {
+                foreach ($sheet->getRowIterator() as $index=>$row) {
+                    $this->out("row");
+                    //Log::debug("row: " . json_encode($row));
+
+                   if($index < 20){
+                       $cells = $row->getCells();
+                       debug($cells[0] . " " . $cells[1] . " " . $cells[2]);
+                   }
+                    // do stuff with the row
+//                    $cells = $row->getCells();
+//                    $this->out("cells");
+//                    Log::debug("cell: " . json_encode($cells));
+                }
+            }
+            
+        }
+
+        $reader->close();
+    }
+
     /**
      * main() method.
      *
@@ -135,6 +187,10 @@ class SchoolImportShell extends Shell {
         $timer->start();
 
         $this->out('========================    PROJECT SCHOOL IMPORT    ========================');
+
+
+        $this->testSpoutReadLargeExcelFile();
+        exit;
 //        $path = dirname(__FILE__) . DS . 'import' . DS . 'schools';
         $importPath = __DIR__ . DS . 'import' . DS . 'schools';
         $file_mimes = ['text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
@@ -181,14 +237,11 @@ class SchoolImportShell extends Shell {
                                 // Import Personal infos
                                 //$reader->setLoadSheetsOnly(["1ปกในPrint", "2รายะเอียดในPrint", "ชื่อ สกุล และที่อยู่", "ข้อมูลพื้นฐาน"]);
                                 // Import position salaries
-                                $reader->setLoadSheetsOnly(["1ปกในPrint", "2รายะเอียดในPrint", "3ตำแหน่ง-เงินเดือน"]);
+                                $reader->setLoadSheetsOnly(["3ตำแหน่ง-เงินเดือน"]);
                             }
                         }
 
-//                        $filesize = filesize($readCurrent); // bytes
-//                        $filesize = round($filesize / 1024 / 1024, 1); // megabytes with 1 digit
-//                        echo "The size of your file is $filesize MB.";exit;
-                        //$this->out("PersonalInfo:: read current file name :: " . $readCurrent);
+                        $this->out("Main:: read current file name :: " . $readCurrent);
                         Log::debug("Main:: read current file name :: " . $readCurrent);
 
 
@@ -211,9 +264,12 @@ class SchoolImportShell extends Shell {
                             //Get sheet by sheet name
                             //Import master Personal data
                             //Must check existing sheet
-                            //dd($sheetNames);
-                            
-                            
+                            /**
+                             * ------------------------------------------------------------------------------------
+                             * Process import section
+                             * ------------------------------------------------------------------------------------
+                             */
+                            dd($sheetNames);
 //                            if (in_array("ข้อมูลพื้นฐาน", $sheetNames)) {
 //                                $this->ActivityLogs->logInfo("PersonalInfo", "read current file name", str_replace(DS, DS . DS, $readCurrent));
 //                                $personalInfos = $spreadsheet->getSheetByName("ข้อมูลพื้นฐาน")->toArray();
@@ -252,7 +308,7 @@ class SchoolImportShell extends Shell {
                 }
             }
             //Remove empty directory
-            $this->removeEmptySubFolders($importPath);
+            //$this->removeEmptySubFolders($importPath);
         }
 
         $this->out("Totoal process time\n" . $timer->resourceUsage());
@@ -268,24 +324,38 @@ class SchoolImportShell extends Shell {
         if (is_array($datas) && (count($datas) > 0)) {
             $data = [];
             try {
+                $countLoopContinue = 0;
+                $loopSkipped = 5;
+
                 $this->loadModel('PositionSalaries');
                 foreach ($datas as $k => $v) {
                     if ($k < $this->dataRows) {
-                        debug($v);
+                        //debug($v);
                         continue;
                     }
 
                     $v = $this->trimAllData($v);
                     if (empty(array_filter($v))) {
+                        ++$countLoopContinue;
+                        if ($countLoopContinue > $loopSkipped) {
+                            unset($datas);
+                            return true;
+                        }
+//                        debug($v);
+                        debug($countLoopContinue);
                         continue;
                     }
 
 
-                    debug($v);exit;
+                    // debug($v);exit;
 
 
                     $data = [];
                     $this->CUSTOMER_REF = $data['card_no'] = @$v[0];
+                    if (empty($data['card_no'])) {
+                        continue;
+                    }
+
                     $data['order_no'] = @$v[1];
                     $data['issue_date'] = @$v[2];
                     $data['position_name'] = @$v[3];
@@ -297,9 +367,6 @@ class SchoolImportShell extends Shell {
                     $data['prev_position'] = @$v[9];
                     $data['position_no'] = @$v[10];
                     $data['salary'] = @$v[11];
-                    
-                    
-                    
                     $data['position_level'] = @$v[12];
                     $data['code'] = @$v[13];
                     $data['ref_title_name'] = @$v[14];
@@ -308,11 +375,11 @@ class SchoolImportShell extends Shell {
                     $data['ref_command_date'] = @$v[17];
                     $data['edit_remark'] = @$v[18];
                     $data['ref_full'] = @$v[19];
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
                     $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
 
 //                    debug("PersonalInfo:: Data" . json_encode($data));
@@ -326,18 +393,21 @@ class SchoolImportShell extends Shell {
 
                         $currSaveStr = $positionSalary->id . '/' . $this->COUNT_ALL_FILES;
                         //$currSaveStr = $k . '/' . $this->COUNT_ALL_FILES;
-                        //$this->out('PositionSalaries:: save success with id :: ' . $currSaveStr);
+                        $this->out('PositionSalaries:: save success with id :: ' . $currSaveStr);
                         //Log::debug("PositionSalaries:: save success:: with id :: " . $personalInfo->id);
                         $this->ActivityLogs->logInfo('PositionSalaries', "save success with id {$currSaveStr}");
                     } else {
-                        $this->countSaveFailed++;
 
+                        $this->countSaveFailed++;
                         $this->out("PositionSalaries:: insert failed error:: ");
                         $sql = $this->generateInsertSQL('position_salaries', $data);
                         Log::debug("PositionSalaries:: save error:: " . $sql);
                         $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, 'insert_position_salaries_error.log');
                         $this->ActivityLogs->logError('PositionSalaries', "save error", $sql);
                     }
+
+
+                    unset($datas[$k]);
                 }//End foreach for save Position salaries
                 $strSummary = "PositionSalaries:: SUMMARY:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}";
 
@@ -345,15 +415,28 @@ class SchoolImportShell extends Shell {
                 $this->ActivityLogs->logInfo('SUMMARY', "insert position_salaries summary:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
                 Log::debug($strSummary);
             } catch (\Exception $ex) {
-                $msg = json_encode($ex);
-                $this->out("PositionSalaries:: error exception:: " . $msg);
-                Log::error("PositionSalaries:: error exception:: " . $msg);
-                $this->ActivityLogs->logError('PositionSalaries', "error exception", $msg);
-                $sql = $this->generateInsertSQL('position_salaries', $data);
-                $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, 'insert_position_salaries_error.log');
-                $this->ActivityLogs->logError('PositionSalaries', "error exception", $sql);
+                $this->catchForException($ex, $data, 'PositionSalaries', 'position_salaries');
             }
         }
+    }
+
+    /**
+     * 
+     * Function Handle catch exception
+     * @author  sarawutt.b
+     * @param type $ex
+     * @param type $data
+     * @param type $modelClass
+     * @param type $tableName
+     */
+    private function catchForException($ex, $data, $modelClass, $tableName) {
+        $msg = json_encode($ex);
+        $this->out("{$modelClass}:: error exception:: " . $msg);
+        Log::error("{$modelClass}:: error exception:: " . $msg);
+        $this->ActivityLogs->logError($modelClass, "error exception", $msg);
+        $sql = $this->generateInsertSQL($tableName, $data);
+        $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, "insert_{$tableName}_error.log");
+        $this->ActivityLogs->logError($modelClass, "error exception", $sql);
     }
 
     /**
