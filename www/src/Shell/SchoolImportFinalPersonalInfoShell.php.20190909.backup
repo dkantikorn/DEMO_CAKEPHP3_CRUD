@@ -85,7 +85,7 @@ class MyReadFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter {
 /**
  * Hello shell command.
  */
-class SchoolImportShell extends Shell {
+class SchoolImportFinalPersonalInfoShell extends Shell {
 
     //public $components = ['CrazyLog'];
     private $resultFiles = [];
@@ -172,11 +172,10 @@ class SchoolImportShell extends Shell {
                             $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
                             //$reader->setReadFilter(new MyReadFilter());
                             $reader->setReadDataOnly(true);
-
-
+                            //$filesize = filesize($readCurrent);
+                            $filesize = round(filesize($readCurrent) / 1024 / 1024, 1);
 
                             //Check for file size if more than 1 MB then filter load
-                            $filesize = round(filesize($readCurrent) / 1024 / 1024, 1);
                             if ($filesize > 1) {
                                 // Import Personal infos
                                 //$reader->setLoadSheetsOnly(["1ปกในPrint", "2รายะเอียดในPrint", "ชื่อ สกุล และที่อยู่", "ข้อมูลพื้นฐาน"]);
@@ -212,18 +211,13 @@ class SchoolImportShell extends Shell {
                             //Import master Personal data
                             //Must check existing sheet
                             //dd($sheetNames);
-                            
-                            
-//                            if (in_array("ข้อมูลพื้นฐาน", $sheetNames)) {
-//                                $this->ActivityLogs->logInfo("PersonalInfo", "read current file name", str_replace(DS, DS . DS, $readCurrent));
-//                                $personalInfos = $spreadsheet->getSheetByName("ข้อมูลพื้นฐาน")->toArray();
-//                                $this->importPersonalInfos($personalInfos, $readCurrent);
-//                                $spreadsheet->disconnectWorksheets();
-//                                $this->moveFileSuccessQueues($readCurrent);
-//                            }
-
-                            if (in_array("3ตำแหน่ง-เงินเดือน", $sheetNames)) {
-
+                            if (in_array("ข้อมูลพื้นฐาน", $sheetNames)) {
+                                $this->ActivityLogs->logInfo("PersonalInfo", "read current file name", str_replace(DS, DS . DS, $readCurrent));
+                                $personalInfos = $spreadsheet->getSheetByName("ข้อมูลพื้นฐาน")->toArray();
+                                $this->importPersonalInfos($personalInfos, $readCurrent);
+                                $spreadsheet->disconnectWorksheets();
+                                $this->moveFileSuccessQueues($readCurrent);
+                            } else if (in_array("3ตำแหน่ง-เงินเดือน", $sheetNames)) {
                                 $this->ActivityLogs->logInfo("PositionSalaries", "read current file name", str_replace(DS, DS . DS, $readCurrent));
                                 $personalInfos = $spreadsheet->getSheetByName("3ตำแหน่ง-เงินเดือน")->toArray();
                                 $this->importPositionSalariesInfos($personalInfos, $readCurrent);
@@ -271,7 +265,6 @@ class SchoolImportShell extends Shell {
                 $this->loadModel('PositionSalaries');
                 foreach ($datas as $k => $v) {
                     if ($k < $this->dataRows) {
-                        debug($v);
                         continue;
                     }
 
@@ -280,78 +273,77 @@ class SchoolImportShell extends Shell {
                         continue;
                     }
 
-
-                    debug($v);exit;
-
-
+                    
+                    dd($v);
+                    
+                    
                     $data = [];
                     $this->CUSTOMER_REF = $data['card_no'] = @$v[0];
-                    $data['order_no'] = @$v[1];
-                    $data['issue_date'] = @$v[2];
-                    $data['position_name'] = @$v[3];
-                    $data['acadamic_standing'] = @$v[4];
-                    $data['salary_level'] = @$v[5];
-                    $data['affiliation'] = @$v[6];
-                    $data['school'] = @$v[7];
-                    $data['other'] = @$v[8];
-                    $data['prev_position'] = @$v[9];
-                    $data['position_no'] = @$v[10];
-                    $data['salary'] = @$v[11];
-                    
-                    
-                    
-                    $data['position_level'] = @$v[12];
-                    $data['code'] = @$v[13];
-                    $data['ref_title_name'] = @$v[14];
-                    $data['ref_command_follow'] = @$v[15];
-                    $data['ref_command_no'] = @$v[16];
-                    $data['ref_command_date'] = @$v[17];
-                    $data['edit_remark'] = @$v[18];
-                    $data['ref_full'] = @$v[19];
-                    
-                    
-                    
-                    
-                    
+                    $data['ref_no'] = @$v[1];
+                    $data['name_prefix'] = @$v[2];
+                    $data['first_name'] = @$v[3];
+                    $data['last_name'] = @$v[4];
+                    $data['gender'] = @$v[5];
+                    $data['date_of_birth'] = @$v[6];
+                    $data['marital_status'] = @$v[7];
+                    $data['blood_group'] = @$v[8];
+                    $data['physical_status'] = @$v[9];
+                    $data['issue_date'] = @$v[10];
+                    $data['start_date'] = @$v[11];
+                    $data['school'] = @$v[12];
+                    $data['position_no'] = @$v[13];
+                    $data['position_name'] = @$v[14];
+                    $data['position_level'] = @$v[15];
+                    $data['phone_no'] = @$v[16];
+                    $data['father_name_prefix'] = @$v[17];
+                    $data['father_first_name'] = @$v[18];
+                    $data['father_last_name'] = @$v[19];
+                    $data['mother_name_prefix'] = @$v[20];
+                    $data['mother_first_name'] = @$v[21];
+                    $data['mother_last_name'] = @$v[22];
+                    $data['spouse_name_prefix'] = @$v[23];
+                    $data['spouse_first_name'] = @$v[24];
+                    $data['spouse_last_name'] = @$v[25];
                     $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
 
 //                    debug("PersonalInfo:: Data" . json_encode($data));
 //                    Log::debug("PersonalInfo:: Data" . json_encode($data));
 //
 //                    exit;
-                    $positionSalary = $this->PositionSalaries->newEntity();
-                    $positionSalary = $this->PositionSalaries->patchEntity($positionSalary, $data);
-                    if ($this->PositionSalaries->save($positionSalary)) {
+                    $personalInfo = $this->PersonalInfos->newEntity();
+                    $personalInfo = $this->PersonalInfos->patchEntity($personalInfo, $data);
+                    if ($this->PersonalInfos->save($personalInfo)) {
                         $this->countSaveSuccess++;
 
-                        $currSaveStr = $positionSalary->id . '/' . $this->COUNT_ALL_FILES;
+                        $currSaveStr = $personalInfo->id . '/' . $this->COUNT_ALL_FILES;
                         //$currSaveStr = $k . '/' . $this->COUNT_ALL_FILES;
-                        //$this->out('PositionSalaries:: save success with id :: ' . $currSaveStr);
-                        //Log::debug("PositionSalaries:: save success:: with id :: " . $personalInfo->id);
-                        $this->ActivityLogs->logInfo('PositionSalaries', "save success with id {$currSaveStr}");
+                        //$this->out('PersonalInfo:: save success with id :: ' . $currSaveStr);
+                        //Log::debug("PersonalInfo:: save success:: with id :: " . $personalInfo->id);
+                        $this->ActivityLogs->logInfo('PersonalInfo', "save success with id {$currSaveStr}");
                     } else {
                         $this->countSaveFailed++;
 
-                        $this->out("PositionSalaries:: insert failed error:: ");
-                        $sql = $this->generateInsertSQL('position_salaries', $data);
-                        Log::debug("PositionSalaries:: save error:: " . $sql);
-                        $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, 'insert_position_salaries_error.log');
-                        $this->ActivityLogs->logError('PositionSalaries', "save error", $sql);
+                        $this->out("PersonalInfo:: insert failed error:: ");
+                        $sql = $this->generateInsertSQL('personal_infos', $data);
+                        Log::debug("PersonalInfo:: save error:: " . $sql);
+                        $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, 'insert_personal_infos_error.log');
+                        $this->ActivityLogs->logError('PersonalInfo', "save error", $sql);
                     }
-                }//End foreach for save Position salaries
-                $strSummary = "PositionSalaries:: SUMMARY:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}";
+                }//End foreach for save Personal infomation
+                $strSummary = "PersonalInfo:: SUMMARY:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}";
 
                 $this->out($strSummary);
-                $this->ActivityLogs->logInfo('SUMMARY', "insert position_salaries summary:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
+                $this->ActivityLogs->logInfo('SUMMARY', "insert personal_infos summary:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
                 Log::debug($strSummary);
             } catch (\Exception $ex) {
                 $msg = json_encode($ex);
-                $this->out("PositionSalaries:: error exception:: " . $msg);
-                Log::error("PositionSalaries:: error exception:: " . $msg);
-                $this->ActivityLogs->logError('PositionSalaries', "error exception", $msg);
-                $sql = $this->generateInsertSQL('position_salaries', $data);
-                $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, 'insert_position_salaries_error.log');
-                $this->ActivityLogs->logError('PositionSalaries', "error exception", $sql);
+                $this->out("PersonalInfo:: error exception:: " . $msg);
+                Log::error("PersonalInfo:: error exception:: " . $msg);
+                $this->ActivityLogs->logError('PersonalInfo', "error exception", $msg);
+
+                $sql = $this->generateInsertSQL('personal_infos', $data);
+                $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, 'insert_personal_infos_error.log');
+                $this->ActivityLogs->logError('PersonalInfo', "error exception", $sql);
             }
         }
     }
