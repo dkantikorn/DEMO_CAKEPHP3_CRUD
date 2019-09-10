@@ -30,71 +30,16 @@ set_time_limit(0);
 ini_set('max_execution_time', 0);
 ini_set("memory_limit", -1);
 
-//function exceptions_error_handler($severity, $message, $filename, $lineno) {
-//    if (error_reporting() == 0) {
-//        return;
-//    }
-//    if (error_reporting() & $severity) {
-//        throw new ErrorException($message, 0, $severity, $filename, $lineno);
-//    }
-//}
-
-/**  Define a Read Filter class implementing IReadFilter  */
-class Chunk implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter {
-
-    private $startRow = 0;
-    private $endRow = 0;
-
-    /**
-     * Set the list of rows that we want to read.
-     *
-     * @param mixed $startRow
-     * @param mixed $chunkSize
-     */
-    public function setRows($startRow, $chunkSize) {
-        $this->startRow = $startRow;
-        $this->endRow = $startRow + $chunkSize;
-    }
-
-    public function readCell($column, $row, $worksheetName = '') {
-        //  Only read the heading row, and the rows that are configured in $this->_startRow and $this->_endRow
-        if (($row == 1) || ($row >= $this->startRow && $row < $this->endRow)) {
-            return true;
-        }
-
-        return false;
-    }
-
-}
-
-class MyReadFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter {
-
-    public function readCell($column, $row, $worksheetName = '') {
-        // Read title row and rows 20 - 30
-//        if ($row == 1 || ($row >= 20 && $row <= 30)) {
-//            return true;
-//        }
-//        if ($row < 6) {
-//            return true;
-//        }
-        //Log::debug($worksheetName);
-        if ($worksheetName != "3ตำแหน่ง-เงินเดือน") {
-            return true;
-        }
-        return false;
-    }
-
-}
-
 /**
  * Hello shell command.
  */
-class SchoolImportShell extends Shell {
+class NewSchoolImportShell extends Shell {
 
     //public $components = ['CrazyLog'];
     private $resultFiles = [];
     private $lastCurrentPath = null;
-    private $dataRows = 1;
+    private $columnRows = 1;
+    private $dataRows = 2;
     private $CrazyLog = null;
     private $LOG_PATH = null;
     private $CURRENT_PATH = null;
@@ -213,6 +158,8 @@ class SchoolImportShell extends Shell {
 //            Log::debug("PersonalInfo:: read all of {$this->COUNT_ALL_FILES} list file :: " . json_encode($this->resultFiles));
 //
 //            foreach ($this->resultFiles as $path => $filename) {
+
+
             foreach ($this->resultFiles as $path => $fileList) {
                 foreach ($fileList as $filename) {
 
@@ -222,83 +169,65 @@ class SchoolImportShell extends Shell {
                         if (!is_file($readCurrent)) {
                             continue;
                         }
-                        //$fileInfo = pathinfo($v);$fileInfo['extension']
+
                         $fileExtension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-                        if ('csv' == $fileExtension) {
-                            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
-                        } else {
-                            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-                            //$reader->setReadFilter(new MyReadFilter());
-                            $reader->setReadDataOnly(true);
 
 
 
-                            //Check for file size if more than 1 MB then filter load
-                            $filesize = round(filesize($readCurrent) / 1024 / 1024, 1);
-                            if ($filesize > 1) {
-                                // Import Personal infos
-                                //$reader->setLoadSheetsOnly(["1ปกในPrint", "2รายะเอียดในPrint", "ชื่อ สกุล และที่อยู่", "ข้อมูลพื้นฐาน"]);
-                                // Import position salaries
-                                $reader->setLoadSheetsOnly(["3ตำแหน่ง-เงินเดือน"]);
-                            }
-                        }
+
+
+
+
+
+//                        if ('csv' == $fileExtension) {
+//                            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+//                        } else {
+//                            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+//                            //$reader->setReadFilter(new MyReadFilter());
+//                            $reader->setReadDataOnly(true);
+//
+//
+//
+//                            //Check for file size if more than 1 MB then filter load
+//                            $filesize = round(filesize($readCurrent) / 1024 / 1024, 1);
+//                            if ($filesize > 1) {
+//                                // Import Personal infos
+//                                //$reader->setLoadSheetsOnly(["1ปกในPrint", "2รายะเอียดในPrint", "ชื่อ สกุล และที่อยู่", "ข้อมูลพื้นฐาน"]);
+//                                // Import position salaries
+//                                $reader->setLoadSheetsOnly(["3ตำแหน่ง-เงินเดือน"]);
+//                            }
+//                        }
+
+
+
+
+
+
 
                         $this->out("Main:: read current file name :: " . $readCurrent);
                         Log::debug("Main:: read current file name :: " . $readCurrent);
 
+                        $reader = ReaderEntityFactory::createXLSXReader();
+                        $reader->setShouldPreserveEmptyRows(true);
+                        $reader->open($readCurrent);
+                        
+                        foreach ($reader->getSheetIterator() as $sheet) {
+                            $sheetName = trim($sheet->getName());
+                            $this->out('Current read sheet name: ' . $sheetName);
 
-//                        $reader = ReaderEntityFactory::createReaderFromFile($readCurrent);
-//                        $reader->open($readCurrent);
-                        //Check for current excel file with there is valid or con read of the file
-                        if ($reader->canRead($readCurrent)) {
-                            $spreadsheet = $reader->load($readCurrent);
 
-                            //Get for sheet count
-//                        $sheetCount = $spreadsheet->getSheetCount();
-                            $sheetNames = $spreadsheet->getSheetNames();
-//                        Log::debug("Read Excel:: sheet count:: " . $sheetCount);
-//                        Log::debug("Read Excel:: sheet count:: " . json_encode($sheetNames));
-                            // Get the second sheet in the workbook
-                            // Note that sheets are indexed from 0
-                            //$spreadsheet->getSheet(1);
-                            //Get data from the active sheet
-//                $sheetData = $spreadsheet->getActiveSheet()->toArray();
-                            //Get sheet by sheet name
-                            //Import master Personal data
-                            //Must check existing sheet
-                            /**
-                             * ------------------------------------------------------------------------------------
-                             * Process import section
-                             * ------------------------------------------------------------------------------------
-                             */
-                            //dd($sheetNames);
-//                            if (in_array("ข้อมูลพื้นฐาน", $sheetNames)) {
-//                                $this->ActivityLogs->logInfo("PersonalInfo", "read current file name", str_replace(DS, DS . DS, $readCurrent));
-//                                $personalInfos = $spreadsheet->getSheetByName("ข้อมูลพื้นฐาน")->toArray();
-//                                $this->importPersonalInfos($personalInfos, $readCurrent);
-//                                $spreadsheet->disconnectWorksheets();
-//                                $this->moveFileSuccessQueues($readCurrent);
-//                            }
-
-                            if (in_array("3ตำแหน่ง-เงินเดือน", $sheetNames)) {
-
+                            if ($sheetName == '3ตำแหน่ง-เงินเดือน') {
                                 $this->ActivityLogs->logInfo("PositionSalaries", "read current file name", str_replace(DS, DS . DS, $readCurrent));
-                                $personalInfos = $spreadsheet->getSheetByName("3ตำแหน่ง-เงินเดือน")->toArray();
-                                $this->importPositionSalariesInfos($personalInfos, $readCurrent);
-                                $spreadsheet->disconnectWorksheets();
-                                //$this->moveFileSuccessQueues($readCurrent);
+                                $result = $this->newImportPositionSalariesInfos($sheet, $readCurrent);
+                                debug("{$result} from called function");
+                                
                             } else {
                                 //If sheetname not match remove to not mat sheetname
-                                $this->moveFileInvalidSheetnameQueues($readCurrent);
+                                //$this->moveFileInvalidSheetnameQueues($readCurrent);
                             }
-                        } else {
-
-                            $this->moveFileInvalidExcelQueues($readCurrent);
-                            $this->out("InvalidExcelFile:: can not to read invalid excel file:: " . $readCurrent);
-                            Log::debug("InvalidExcelFile:: can not to read invalid excel file:: " . $readCurrent);
-                            $this->ActivityLogs->logError("InvalidExcelFile", "can not to read invalid excel file", str_replace(DS, DS . DS, $readCurrent));
-                            $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $readCurrent, 'read_invalid_excel_file.log');
                         }
+
+                        $reader->close();
                     } catch (\Exception $ex) {
                         $msg = json_encode($ex);
                         $this->out("Main:: error exception:: " . $msg);
@@ -314,6 +243,129 @@ class SchoolImportShell extends Shell {
         }
 
         $this->out("Totoal process time\n" . $timer->resourceUsage());
+    }
+
+    /**
+     * 
+     * Import personal data (ข้อมูลตำแหน่ง และเงินเดือน)
+     * import to position_salaries table
+     * @param type $datas by reference
+     */
+    private function newImportPositionSalariesInfos(&$sheet, $currentPath) {
+
+
+//        $key = [];
+//        foreach ($sheet->getRowIterator() as $index => $row) {
+//            $cells = $row->getCells();
+//            if ($index == 1) {
+//                foreach ($cells as $tmpKey => $tmpVal) {
+//                    $this->out($tmpVal);
+//                }
+//            }
+//exit;
+
+
+        $data = [];
+        try {
+            $countLoopContinue = 0;
+            $loopSkipped = 5;
+            $this->loadModel('PositionSalaries');
+            foreach ($sheet->getRowIterator() as $index => $row) {
+                $cells = $row->getCells();
+                if ($index < $this->dataRows) {
+                    continue;
+                }
+
+                $data = [];
+                $this->CUSTOMER_REF = $data['card_no'] = @$cells[0] . '';
+                if (empty($data['card_no'])) {
+                    ++$countLoopContinue;
+                    if ($countLoopContinue > $loopSkipped) {
+                        debug('($countLoopContinue > $loopSkipped) = true then return true');
+                        return true;
+                    }
+                    debug("current countLoopContinue : $countLoopContinue");
+                    continue;
+                }
+
+                $data['order_no'] = @$cells[1] . '';
+                $data['issue_date'] = @$cells[2] . '';
+                $data['position_name'] = @$cells[3] . '';
+                $data['acadamic_standing'] = @$cells[4] . '';
+                $data['salary_level'] = @$cells[5] . '';
+                $data['affiliation'] = @$cells[6] . '';
+                $data['school'] = @$cells[7] . '';
+                $data['other'] = @$cells[8] . '';
+                $data['prev_position'] = @$cells[9] . '';
+                $data['position_no'] = @$cells[10] . '';
+                $data['salary'] = @$cells[11] . '';
+                $data['position_level'] = @$cells[12] . '';
+                $data['code'] = @$cells[13] . '';
+                $data['ref_title_name'] = @$cells[14] . '';
+                $data['ref_command_follow'] = @$cells[15] . '';
+                $data['ref_command_no'] = @$cells[16] . '';
+                $data['ref_command_date'] = @$cells[17] . '';
+                $data['edit_remark'] = @$cells[18] . '';
+                $data['ref_full'] = @$cells[19] . '';
+
+                $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
+                $positionSalary = $this->PositionSalaries->newEntity();
+                $positionSalary = $this->PositionSalaries->patchEntity($positionSalary, $data);
+                if ($this->PositionSalaries->save($positionSalary)) {
+                    $this->countSaveSuccess++;
+
+                    $currSaveStr = $positionSalary->id . '/' . $this->COUNT_ALL_FILES;
+                    $this->out('PositionSalaries:: save success with id :: ' . $currSaveStr);
+                    $this->ActivityLogs->logInfo('PositionSalaries', "save success with id {$currSaveStr}");
+                } else {
+
+                    $this->countSaveFailed++;
+                    $this->out("PositionSalaries:: insert failed error:: ");
+                    $sql = $this->generateInsertSQL('position_salaries', $data);
+                    Log::debug("PositionSalaries:: save error:: " . $sql);
+                    $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, 'insert_position_salaries_error.log');
+                    $this->ActivityLogs->logError('PositionSalaries', "save error", $sql);
+                }
+
+
+
+//                if ($index > 1) {
+//                    $this->out($index . ' | ' . $cells[0] . ", " . $cells[1] . ", " . $cells[2] . ", " . $cells[3] . ", " . $cells[4]);
+//                } else {
+//                    continue;
+//                }
+            }//end foreach
+
+            $strSummary = "PositionSalaries:: SUMMARY:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}";
+
+            $this->out($strSummary);
+            $this->ActivityLogs->logInfo('SUMMARY', "insert position_salaries summary:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
+            Log::debug($strSummary);
+        } catch (\Exception $ex) {
+            $this->catchForException($ex, $data, 'PositionSalaries', 'position_salaries');
+        }//End catch
+
+        return true;
+
+
+
+
+
+
+
+
+
+
+
+//
+//
+//            if ($index > 1) {
+//                $cells = $row->getCells();
+//                $this->out($index . ' | ' . $cells[0] . ", " . $cells[1] . ", " . $cells[2] . ", " . $cells[3] . ", " . $cells[4]);
+//            } else {
+//                exit;
+//            }
+//        }
     }
 
     /**
