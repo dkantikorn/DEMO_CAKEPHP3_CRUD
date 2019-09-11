@@ -168,7 +168,7 @@ class NewSchoolImportShell extends Shell {
                                 $this->ActivityLogs->logInfo("PositionSalaries", "read current file name", str_replace(DS, DS . DS, $readCurrent));
                                 $result = $this->newImportPositionSalariesInfos($sheet, $readCurrent);
 
-                                //debug("{$result} from called function");
+                                debug("{$result} from called function");
                             } else {
                                 //If sheetname not match remove to not mat sheetname
                                 //$this->moveFileInvalidSheetnameQueues($readCurrent);
@@ -176,7 +176,7 @@ class NewSchoolImportShell extends Shell {
                         }
 
                         $reader->close();
-                        $this->moveFileSuccessQueues($readCurrent);
+                        //$this->moveFileSuccessQueues($readCurrent);
                     } catch (\Exception $ex) {
                         $msg = json_encode($ex);
                         $this->out("Main:: error exception:: " . $msg);
@@ -188,7 +188,7 @@ class NewSchoolImportShell extends Shell {
                 }
             }
             //Remove empty directory
-            $this->removeEmptySubFolders($importPath);
+            //$this->removeEmptySubFolders($importPath);
         }
 
         $this->out("Totoal process time\n" . $timer->resourceUsage());
@@ -201,6 +201,19 @@ class NewSchoolImportShell extends Shell {
      * @param type $datas by reference
      */
     private function newImportPositionSalariesInfos(&$sheet, $currentPath) {
+
+
+//        $key = [];
+//        foreach ($sheet->getRowIterator() as $index => $row) {
+//            $cells = $row->getCells();
+//            if ($index == 1) {
+//                foreach ($cells as $tmpKey => $tmpVal) {
+//                    $this->out($tmpVal);
+//                }
+//            }
+//exit;
+
+
         $data = [];
         $columnNames = [];
         try {
@@ -225,22 +238,10 @@ class NewSchoolImportShell extends Shell {
 
 
                 $data = [];
-                if (array_key_exists('เลขประจำตัว', $columnNames)) {
-                    $this->CUSTOMER_REF = @$cells[$columnNames['เลขประจำตัว']] . '';
-                } else if (array_key_exists('เลขประจำตัวประชาชนครู', $columnNames)) {
-                    $this->CUSTOMER_REF = @$cells[$columnNames['เลขประจำตัวประชาชนครู']] . '';
-                } else {
-                    $this->CUSTOMER_REF = @$cells[0] . '';
-                }
-
-                $data['card_no'] = $this->CUSTOMER_REF;
-
-                if (array_key_exists('เงินเดือน', $columnNames)) {
-                    $data['salary'] = @$cells[$columnNames['เงินเดือน']] . '';
-                } else {
-                    $data['salary'] = @$cells[11] . '';
-                }
-
+                $this->CUSTOMER_REF = $data['card_no'] = @$cells[0] . '';
+                
+                
+                $data['salary'] = @$cells[11] . '';
 
                 if (empty($data['card_no']) || empty($data['salary'])) {
                     ++$countLoopContinue;
@@ -252,135 +253,25 @@ class NewSchoolImportShell extends Shell {
                     continue;
                 }
 
-                if (array_key_exists('ลำดับที่', $columnNames)) {
-                    $data['order_no'] = @$cells[$columnNames['ลำดับที่']] . '';
-                } else {
-                    $data['order_no'] = @$cells[1] . '';
-                }
-
-
-
-
-
-                if (array_key_exists('วัน/เดือน/พ.ศ.', $columnNames)) {
-                    $data['issue_date'] = $cells[$columnNames['วัน/เดือน/พ.ศ.']] . '';
-                } else {
-                    $data['issue_date'] = @$cells[2] . '';
-                }
-
-                if (array_key_exists('ตำแหน่ง', $columnNames)) {
-                    $data['position_name'] = @$cells[$columnNames['ตำแหน่ง']] . '';
-                } else {
-                    $data['position_name'] = @$cells[3] . '';
-                }
-
-                if (array_key_exists('วิทยฐานะ', $columnNames)) {
-                    $data['acadamic_standing'] = @$cells[$columnNames['วิทยฐานะ']] . '';
-                } else {
-                    $data['acadamic_standing'] = @$cells[4] . '';
-                }
-
-                if (array_key_exists('รับเงินเดือนระดับ', $columnNames)) {
-                    $data['position_level'] = @$cells[$columnNames['รับเงินเดือนระดับ']] . '';
-                } else {
-                    $data['position_level'] = @$cells[5] . '';
-                }
-
-
-                if (array_key_exists('สำนักงานเขค', $columnNames)) {
-                    $data['affiliation'] = @$cells[$columnNames['สำนักงานเขค']] . '';
-                } elseif (array_key_exists('สำนักงานเขต', $columnNames)) {
-                    $data['affiliation'] = @$cells[$columnNames['สำนักงานเขต']] . '';
-                } else {
-                    $data['affiliation'] = @$cells[6] . '';
-                }
-
-                if (array_key_exists('โรงเรียน', $columnNames)) {
-                    $data['school'] = @$cells[$columnNames['โรงเรียน']] . '';
-                } else {
-                    $data['school'] = @$cells[7] . '';
-                }
-
-                if (array_key_exists('อื่น ๆ', $columnNames)) {
-                    $data['other'] = @$cells[$columnNames['อื่น ๆ']] . '';
-                } else {
-                    $data['other'] = @$cells[8] . '';
-                }
-
-                if (array_key_exists('ตำแหน่งเดิม (ข้อความช่องตำแหน่งทั้งหมด)', $columnNames)) {
-                    $data['prev_position'] = @$cells[$columnNames['ตำแหน่งเดิม (ข้อความช่องตำแหน่งทั้งหมด)']] . '';
-                } elseif (array_key_exists('ตำแหน่งเดิม', $columnNames)) {
-                    $data['prev_position'] = @$cells[$columnNames['ตำแหน่งเดิม']] . '';
-                } else {
-                    $data['prev_position'] = @$cells[9] . '';
-                }
-
-                if (array_key_exists('เลขที่ตำแหน่ง', $columnNames)) {
-                    $data['position_no'] = @$cells[$columnNames['เลขที่ตำแหน่ง']] . '';
-                } else {
-                    $data['position_no'] = @$cells[10] . '';
-                }
-
-
-//                if (array_key_exists('เงินเดือน', $columnNames)) {
-//                    $data['salary'] = @$cells[$columnNames['เงินเดือน']] . '';
-//                } else {
-//                    $data['salary'] = @$cells[11] . '';
-//                }
-
-
-                if (array_key_exists('ขั้น', $columnNames)) {
-                    $data['salary_level'] = @$cells[$columnNames['ขั้น']] . '';
-                } else {
-                    $data['salary_level'] = @$cells[12] . '';
-                }
-
-
-
-                if (array_key_exists('code', $columnNames)) {
-                    $data['code'] = @$cells[$columnNames['code']] . '';
-                } else {
-                    $data['code'] = @$cells[13] . '';
-                }
-
-
-                if (array_key_exists('อ้างอิง', $columnNames)) {
-                    $data['ref_title_name'] = @$cells[$columnNames['อ้างอิง']] . '';
-                } else {
-                    $data['ref_title_name'] = @$cells[14] . '';
-                }
-
-                if (array_key_exists('เลขที่คำสั่ง', $columnNames)) {
-                    $data['ref_command_follow'] = @$cells[$columnNames['เลขที่คำสั่ง']] . '';
-                } else {
-                    $data['ref_command_follow'] = @$cells[15] . '';
-                }
-
-                if (array_key_exists('เลขที่คำสั่ง', $columnNames)) {
-                    $data['ref_command_no'] = @$cells[$columnNames['เลขที่คำสั่ง'] + 1] . '';
-                } else {
-                    $data['ref_command_no'] = @$cells[16] . '';
-                }
-
-
-                if (array_key_exists('ลงวันที่', $columnNames)) {
-                    $data['ref_command_date'] = @$cells[$columnNames['ลงวันที่']] . '';
-                } else {
-                    $data['ref_command_date'] = @$cells[17] . '';
-                }
-
-                if (array_key_exists('แก้ไข', $columnNames)) {
-                    $data['edit_remark'] = @$cells[$columnNames['แก้ไข']] . '';
-                } else {
-                    $data['edit_remark'] = @$cells[18] . '';
-                }
-
-                if (array_key_exists('อ้างอิงทั้งหมด', $columnNames)) {
-                    $data['ref_full'] = @$cells[$columnNames['อ้างอิงทั้งหมด']] . '';
-                } else {
-                    $data['ref_full'] = @$cells[19] . '';
-                }
-
+                $data['order_no'] = @$cells[1] . '';
+                $data['issue_date'] = @$cells[2] . '';
+                $data['position_name'] = @$cells[3] . '';
+                $data['acadamic_standing'] = @$cells[4] . '';
+                $data['salary_level'] = @$cells[5] . '';
+                $data['affiliation'] = @$cells[6] . '';
+                $data['school'] = @$cells[7] . '';
+                $data['other'] = @$cells[8] . '';
+                $data['prev_position'] = @$cells[9] . '';
+                $data['position_no'] = @$cells[10] . '';
+//                $data['salary'] = @$cells[11] . '';
+                $data['position_level'] = @$cells[12] . '';
+                $data['code'] = @$cells[13] . '';
+                $data['ref_title_name'] = @$cells[14] . '';
+                $data['ref_command_follow'] = @$cells[15] . '';
+                $data['ref_command_no'] = @$cells[16] . '';
+                $data['ref_command_date'] = @$cells[17] . '';
+                $data['edit_remark'] = @$cells[18] . '';
+                $data['ref_full'] = @$cells[19] . '';
 
                 $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
                 $positionSalary = $this->PositionSalaries->newEntity();
@@ -403,16 +294,14 @@ class NewSchoolImportShell extends Shell {
             }//end foreach
 
             $strSummary = "PositionSalaries:: SUMMARY:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}";
+
             $this->out($strSummary);
             $this->ActivityLogs->logInfo('SUMMARY', "insert position_salaries summary:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
-            $this->out("=======================================================================================================================================================================");
             Log::debug($strSummary);
-            return true;
         } catch (\Exception $ex) {
             $this->catchForException($ex, $data, 'PositionSalaries', 'position_salaries');
-            return false;
         }//End catch
-        
+        return true;
     }
 
     /**
