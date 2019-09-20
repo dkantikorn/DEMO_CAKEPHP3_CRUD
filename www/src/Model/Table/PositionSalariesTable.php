@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -19,8 +20,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class PositionSalariesTable extends Table
-{
+class PositionSalariesTable extends Table {
 
     /**
      * Initialize method
@@ -28,8 +28,7 @@ class PositionSalariesTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
-    {
+    public function initialize(array $config) {
         parent::initialize($config);
 
         $this->setTable('position_salaries');
@@ -45,102 +44,109 @@ class PositionSalariesTable extends Table
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
-    {
+    public function validationDefault(Validator $validator) {
         $validator
-            ->allowEmpty('id', 'create');
+                ->allowEmpty('id', 'create');
 
         $validator
-            ->scalar('card_no')
-            ->allowEmpty('card_no');
+                ->scalar('card_no')
+                ->allowEmpty('card_no');
 
         $validator
-            ->scalar('issue_date')
-            ->allowEmpty('issue_date');
+                ->scalar('issue_date')
+                ->allowEmpty('issue_date');
 
         $validator
-            ->scalar('prev_position')
-            ->allowEmpty('prev_position');
+                ->scalar('prev_position')
+                ->allowEmpty('prev_position');
 
         $validator
-            ->scalar('position_name')
-            ->allowEmpty('position_name');
+                ->scalar('position_name')
+                ->allowEmpty('position_name');
 
         $validator
-            ->scalar('position_no')
-            ->allowEmpty('position_no');
+                ->scalar('position_no')
+                ->allowEmpty('position_no');
 
         $validator
-            ->scalar('salary')
-            ->allowEmpty('salary');
+                ->scalar('salary')
+                ->allowEmpty('salary');
 
         $validator
-            ->scalar('salary_level')
-            ->allowEmpty('salary_level');
+                ->scalar('salary_level')
+                ->allowEmpty('salary_level');
 
         $validator
-            ->scalar('position_level')
-            ->allowEmpty('position_level');
+                ->scalar('position_level')
+                ->allowEmpty('position_level');
 
         $validator
-            ->scalar('ref_title_name')
-            ->allowEmpty('ref_title_name');
+                ->scalar('ref_title_name')
+                ->allowEmpty('ref_title_name');
 
         $validator
-            ->scalar('ref_command_follow')
-            ->allowEmpty('ref_command_follow');
+                ->scalar('ref_command_follow')
+                ->allowEmpty('ref_command_follow');
 
         $validator
-            ->scalar('ref_command_no')
-            ->allowEmpty('ref_command_no');
+                ->scalar('ref_command_no')
+                ->allowEmpty('ref_command_no');
 
         $validator
-            ->scalar('ref_command_date')
-            ->allowEmpty('ref_command_date');
+                ->scalar('ref_command_date')
+                ->allowEmpty('ref_command_date');
 
         $validator
-            ->scalar('ref_full')
-            ->allowEmpty('ref_full');
+                ->scalar('ref_full')
+                ->allowEmpty('ref_full');
 
         $validator
-            ->scalar('order_no')
-            ->allowEmpty('order_no');
+                ->scalar('order_no')
+                ->allowEmpty('order_no');
 
         $validator
-            ->scalar('school')
-            ->allowEmpty('school');
+                ->scalar('school')
+                ->allowEmpty('school');
 
         $validator
-            ->scalar('acadamic_standing')
-            ->allowEmpty('acadamic_standing');
+                ->scalar('acadamic_standing')
+                ->allowEmpty('acadamic_standing');
 
         $validator
-            ->scalar('recheck')
-            ->allowEmpty('recheck');
+                ->scalar('recheck')
+                ->allowEmpty('recheck');
 
         $validator
-            ->scalar('source_file')
-            ->allowEmpty('source_file');
+                ->scalar('source_file')
+                ->allowEmpty('source_file');
 
         $validator
-            ->scalar('remark')
-            ->allowEmpty('remark');
-        
+                ->scalar('remark')
+                ->allowEmpty('remark');
+
         $validator
-            ->scalar('code')
-            ->allowEmpty('code');
-        
+                ->scalar('code')
+                ->allowEmpty('code');
+
         $validator
-            ->scalar('edit_remark')
-            ->allowEmpty('edit_remark');
-        
+                ->scalar('edit_remark')
+                ->allowEmpty('edit_remark');
+
         $validator
-            ->scalar('other')
-            ->allowEmpty('other');
-        
+                ->scalar('other')
+                ->allowEmpty('other');
+
         $validator
-            ->scalar('affiliation')
-            ->allowEmpty('affiliation');
+                ->scalar('affiliation')
+                ->allowEmpty('affiliation');
+
+        $validator
+                ->scalar('issue_date_prev')
+                ->allowEmpty('issue_date_prev');
+
+        $validator
+                ->scalar('ref_command_date_prev')
+                ->allowEmpty('ref_command_date_prev');
 
         return $validator;
     }
@@ -150,8 +156,8 @@ class PositionSalariesTable extends Table
      *
      * @return string
      */
-    public static function defaultConnectionName()
-    {
+    public static function defaultConnectionName() {
         return 'master';
     }
+
 }

@@ -157,6 +157,7 @@ class NewSchoolImportShell extends Shell {
 
                         $reader = ReaderEntityFactory::createXLSXReader();
                         $reader->setShouldPreserveEmptyRows(true);
+                        $reader->setShouldFormatDates(true);
                         $reader->open($readCurrent);
 
                         foreach ($reader->getSheetIterator() as $sheet) {
@@ -404,7 +405,7 @@ class NewSchoolImportShell extends Shell {
 
             $strSummary = "PositionSalaries:: SUMMARY:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}";
             $this->out($strSummary);
-            $this->ActivityLogs->logInfo('SUMMARY', "insert position_salaries summary:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
+            $this->ActivityLogs->logInfo('PositionSalaries -> SUMMARY', "insert position_salaries summary:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
             $this->out("=======================================================================================================================================================================");
             Log::debug($strSummary);
             return true;
@@ -412,7 +413,6 @@ class NewSchoolImportShell extends Shell {
             $this->catchForException($ex, $data, 'PositionSalaries', 'position_salaries');
             return false;
         }//End catch
-        
     }
 
     /**
@@ -766,7 +766,13 @@ class NewSchoolImportShell extends Shell {
     }
 
     public function removeEmptySubFolders($dir) {
-        $files = array_diff(scandir($dir), array('.', '..'));
+
+        try {
+            $dirScan = @scandir($dir);
+            if (empty($dirScan)) {
+                return true;
+            }
+            $files = array_diff($dirScan, ['.', '..']);
 //        if (is_array($files) && !empty($files)) {
 //            foreach ($files as $file) {
 //                $currentPath = $dir . DS . $file;
@@ -795,28 +801,34 @@ class NewSchoolImportShell extends Shell {
 //            return true;
 //        }
 
-        foreach ($files as $file) {
-            $currentPath = $dir . DS . $file;
-            if ((is_dir($currentPath))) {
-                $this->removeEmptySubFolders($currentPath);
-            } else {
-                if (strpos($file, '~$') !== false) {
-                    $msg = "DeleteFile:: delete tmp file:: " . $file;
-                    $this->out($msg);
+            foreach ($files as $file) {
+                $currentPath = $dir . DS . $file;
+                if ((is_dir($currentPath))) {
+                    $this->removeEmptySubFolders($currentPath);
+                } else {
+                    if (strpos($file, '~$') !== false) {
+                        $msg = "DeleteFile:: delete tmp file:: " . $file;
+                        $this->out($msg);
 //                    $this->ActivityLogs->logError("DeleteFile", "can not to read file", str_replace(DS, DS . DS, $currentPath));
 //                    $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $currentPath, 'cannot_read_error.log');
-                    Log::debug($msg);
-                    @unlink($currentPath);
-                    $this->removeEmptySubFolders($dir);
+                        Log::debug($msg);
+                        @unlink($currentPath);
+                        $this->removeEmptySubFolders($dir);
+                    }
                 }
             }
-        }
-        if (count($files) < 1) {
-            $msg = "DeleteFile:: delete tmp directory:: " . $dir;
-            $this->out($msg);
-            @rmdir($dir);
-        } else {
-            return true;
+            if (count($files) < 1) {
+                $msg = "DeleteFile:: delete tmp directory:: " . $dir;
+                $this->out($msg);
+                @rmdir($dir);
+            } else {
+                return true;
+            }
+        } catch (\Exception $ex) {
+            $msg = json_encode($ex);
+            //$this->out("removeEmptySubFolders:: error exception:: " . $msg);
+            Log::error("removeEmptySubFolders:: error exception:: " . $msg);
+            return false;
         }
     }
 

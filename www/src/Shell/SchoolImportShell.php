@@ -344,7 +344,7 @@ class SchoolImportShell extends Shell {
                             return true;
                         }
 //                        debug($v);
-                        debug($countLoopContinue);
+                        $this->out("Count loop read empty row: {$countLoopContinue}");
                         continue;
                     }
 
@@ -414,7 +414,7 @@ class SchoolImportShell extends Shell {
                 $strSummary = "PositionSalaries:: SUMMARY:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}";
 
                 $this->out($strSummary);
-                $this->ActivityLogs->logInfo('SUMMARY', "insert position_salaries summary:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
+                $this->ActivityLogs->logInfo('PositionSalaries -> SUMMARY', "insert position_salaries summary:: SUCCESS: {$this->countSaveSuccess}, FAILED: {$this->countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
                 Log::debug($strSummary);
             } catch (\Exception $ex) {
                 $this->catchForException($ex, $data, 'PositionSalaries', 'position_salaries');

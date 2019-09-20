@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -29,8 +30,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  */
-class PositionSalary extends Entity
-{
+class PositionSalary extends Entity {
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -66,6 +66,9 @@ class PositionSalary extends Entity
         'source_file' => true,
         'remark' => true,
         'created' => true,
-        'modified' => true
+        'modified' => true,
+        'issue_date_prev' => true,
+        'ref_command_date_prev' => true
     ];
+
 }
