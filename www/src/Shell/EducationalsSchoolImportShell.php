@@ -107,61 +107,277 @@ class EducationalsSchoolImportShell extends Shell {
                             }
 
                             if (in_array($sheetName, ['ประวัติการศึกษา', 'การศึกษา'])) {
-//                                $this->ActivityLogs->logInfo("Educationals", "read current file name", str_replace(DS, DS . DS, $readCurrent));
-//                                $this->out('============================================    START IMPORT EDUCTIONALS  ============================================');
-//                                $result = $this->importEducationals($sheet, $readCurrent);
-//                                $this->out('============================================    COMPLETE IMPORT EDUCTIONALS  ============================================');
+                                $this->ActivityLogs->logInfo("Educationals", "read current file name", str_replace(DS, DS . DS, $readCurrent));
+                                $this->out('============================================    START IMPORT EDUCTIONALS  ============================================');
+                                $result = $this->importEducationals($sheet, $readCurrent);
+                                $this->out('============================================    COMPLETE IMPORT EDUCTIONALS  ============================================');
                             }
+                            
                             if (in_array($sheetName, ['ประวัติการลา', 'การลา'])) {
-//                                $this->ActivityLogs->logInfo("LeaveRecords", "read current file name", str_replace(DS, DS . DS, $readCurrent));
-//                                $this->out('============================================    START IMPORT LEAVE RECORDS  ============================================');
-//                                $result = $this->importLeaveRecords($sheet, $readCurrent);
-//                                $this->out('============================================    COMPLETE IMPORT LEAVE RECORDS  ============================================');
+                                $this->ActivityLogs->logInfo("LeaveRecords", "read current file name", str_replace(DS, DS . DS, $readCurrent));
+                                $this->out('============================================    START IMPORT LEAVE RECORDS  ============================================');
+                                $result = $this->importLeaveRecords($sheet, $readCurrent);
+                                $this->out('============================================    COMPLETE IMPORT LEAVE RECORDS  ============================================');
                             }
 
                             if (in_array($sheetName, ['ประวัติเครื่องราชฯ', 'เครื่องราชฯ'])) {
-//                                $this->ActivityLogs->logInfo("Insignias", "read current file name", str_replace(DS, DS . DS, $readCurrent));
-//                                $this->out('============================================    START IMPORT INSIGNIAS  ============================================');
-//                                $result = $this->importInsignias($sheet, $readCurrent);
-//                                $this->out('============================================    COMPLETE IMPORT INSIGNIAS  ============================================');
+                                $this->ActivityLogs->logInfo("Insignias", "read current file name", str_replace(DS, DS . DS, $readCurrent));
+                                $this->out('============================================    START IMPORT INSIGNIAS  ============================================');
+                                $result = $this->importInsignias($sheet, $readCurrent);
+                                $this->out('============================================    COMPLETE IMPORT INSIGNIAS  ============================================');
                             }
 
                             if (in_array($sheetName, ['ประวัติการอบรม', 'การอบรม', 'อบรม'])) {
-//                                $this->ActivityLogs->logInfo("Trainings", "read current file name", str_replace(DS, DS . DS, $readCurrent));
-//                                $this->out('============================================    START IMPORT TRAININGS  ============================================');
-//                                $result = $this->importTrainings($sheet, $readCurrent);
-//                                $this->out('============================================    COMPLETE IMPORT TRANINGS  ============================================');
+                                $this->ActivityLogs->logInfo("Trainings", "read current file name", str_replace(DS, DS . DS, $readCurrent));
+                                $this->out('============================================    START IMPORT TRAININGS  ============================================');
+                                $result = $this->importTrainings($sheet, $readCurrent);
+                                $this->out('============================================    COMPLETE IMPORT TRANINGS  ============================================');
                             }
-
 
                             if (in_array($sheetName, ['ประวัติราชการพิเศษ', 'ราชการพิเศษ'])) {
                                 $this->ActivityLogs->logInfo("SpecialCivils", "read current file name", str_replace(DS, DS . DS, $readCurrent));
                                 $this->out('============================================    START IMPORT SPECIAL CIVILS  ============================================');
                                 $result = $this->importSpecialCivils($sheet, $readCurrent);
                                 $this->out('============================================    COMPLETE IMPORT SPECIAL CIVILS  ============================================');
-                            } else {
-                                //If sheetname not match remove to not mat sheetname
-                                //$this->moveFileInvalidSheetnameQueues($readCurrent);
                             }
+
+                            if (in_array($sheetName, ['ประวัติความสามารถ', 'ความสามารถ', 'ความสามารถพิเศษ'])) {
+                                $this->ActivityLogs->logInfo("Talents", "read current file name", str_replace(DS, DS . DS, $readCurrent));
+                                $this->out('============================================    START IMPORT TALENTS  ============================================');
+                                $result = $this->importTalents($sheet, $readCurrent);
+                                $this->out('============================================    COMPLETE IMPORT TALENTS  ============================================');
+                            }
+                            
+                            if (in_array($sheetName, ['รายการอื่น', 'อื่นๆ'])) {
+                                $this->ActivityLogs->logInfo("ListOthers", "read current file name", str_replace(DS, DS . DS, $readCurrent));
+                                $this->out('============================================    START IMPORT LIST OTHERS  ============================================');
+                                $result = $this->importListOthers($sheet, $readCurrent);
+                                $this->out('============================================    COMPLETE IMPORT LIST OTHERS  ============================================');
+                            }
+                            
                         }
 
                         $reader->close();
-                        //$this->moveFileSuccessQueues($readCurrent);
+                        $this->moveFileSuccessQueues($readCurrent);
                     } catch (\Exception $ex) {
                         $msg = json_encode($ex);
                         $this->out("Main:: error exception:: " . $msg);
                         Log::error("Main:: error exception:: " . $msg);
                         $this->ActivityLogs->logError('Main', "error exception", $msg);
-                        //$this->moveFileExceptionQueues($readCurrent);
+                        $this->moveFileExceptionQueues($readCurrent);
                         continue;
                     }
                 }
             }
             //Remove empty directory
-            //$this->removeEmptySubFolders($importPath);
+            $this->removeEmptySubFolders($importPath);
         }
 
         $this->out("Totoal process time\n" . $timer->resourceUsage());
+    }
+
+    
+    /**
+     * 
+     * Import personal data (รายการอื่น / อื่นๆ)
+     * Sheet name [รายการอื่น]
+     * import to list_others table
+     * @param type $datas by reference
+     */
+    private function importListOthers(&$sheet, $currentPath) {
+        $data = [];
+        $columnNames = [];
+        try {
+            $countSaveSuccess = $countSaveFailed = $countLoopContinue = 0;
+            $loopSkipped = 10;
+            $model = 'ListOthers';
+            $tableName = Inflector::tableize(Inflector::singularize($model));
+            $this->loadModel($model);
+
+            foreach ($sheet->getRowIterator() as $index => $row) {
+                $cells = $row->getCells();
+                $data = [];
+
+                //If first row then make column name
+                if ($index == 1) {
+                    $firstRows = [];
+                    foreach ($cells as $key => $val) {
+                        $firstRows[$key] = trim($val);
+                    }
+                    $columnNames = array_flip($firstRows);
+                    continue;
+                }
+
+                if (array_key_exists('เลขประจำตัว', $columnNames)) {
+                    $this->CUSTOMER_REF = @$cells[$columnNames['เลขประจำตัว']] . '';
+                } else if (array_key_exists('เลขประจำตัวประชาชนครู', $columnNames)) {
+                    $this->CUSTOMER_REF = @$cells[$columnNames['เลขประจำตัวประชาชนครู']] . '';
+                } else {
+                    $this->CUSTOMER_REF = @$cells[0] . '';
+                }
+
+                $data['card_no'] = $this->CUSTOMER_REF;
+
+                if (array_key_exists('ลำดับที่', $columnNames)) {
+                    $data['order_no'] = @$cells[$columnNames['ลำดับที่']] . '';
+                } else {
+                    $data['order_no'] = @$cells[1] . '';
+                }
+
+//                if (array_key_exists('วันที่', $columnNames)) {
+//                    $data['issue_date'] = @$cells[$columnNames['วันที่']] . '';
+//                } else {
+//                    $data['issue_date'] = @$cells[2] . '';
+//                }
+
+                if (array_key_exists('รายการ', $columnNames)) {
+                    $data['name'] = @$cells[$columnNames['รายการ']] . '';
+                } else {
+                    $data['name'] = @$cells[2] . '';
+                }
+
+                if (empty($data['card_no']) || empty($data['name'])) {
+                    ++$countLoopContinue;
+                    if ($countLoopContinue > $loopSkipped) {
+                        $this->out("($countLoopContinue > $loopSkipped) = true then return true");
+                        return true;
+                    }
+                    $this->out("current countLoopContinue : $countLoopContinue");
+                    continue;
+                }
+
+                $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
+                $data = $this->trimAllData($data);
+                $modelEntities = $this->{$model}->newEntity();
+                $saveData = $this->{$model}->patchEntity($modelEntities, $data);
+
+                if ($this->{$model}->save($saveData)) {
+                    $countSaveSuccess++;
+                    $currSaveStr = $saveData->id;
+                    $this->out("$model:: save success with id :: {$currSaveStr}");
+                    $this->ActivityLogs->logInfo($model, "save success with id {$currSaveStr}");
+                } else {
+                    $countSaveFailed++;
+                    $this->out("$model:: insert failed error:: ");
+                    $sql = $this->generateInsertSQL($tableName, $data);
+                    Log::debug("{$model}:: save error:: " . $sql);
+                    $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, "insert_{$tableName}_error.log");
+                    $this->ActivityLogs->logError($model, "save error", $sql);
+                }
+            }//end foreach
+
+            $strSummary = "{$model}:: SUMMARY:: SUCCESS: {$countSaveSuccess}, FAILED: {$countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}";
+            $this->out($strSummary);
+            $this->ActivityLogs->logInfo("{$model} -> SUMMARY", "insert {$tableName} summary:: SUCCESS: {$countSaveSuccess}, FAILED: {$countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
+            $this->out("=======================================================================================================================================================================");
+            Log::debug($strSummary);
+            return true;
+        } catch (\Exception $ex) {
+            $this->catchForException($ex, $data, $model, $tableName);
+            return false;
+        }//End catch
+    }
+    
+    
+    /**
+     * 
+     * Import personal data (ประวัติความสามารถ / ความสามารถ)
+     * Sheet name [ความสามารถ]
+     * import to talents table
+     * @param type $datas by reference
+     */
+    private function importTalents(&$sheet, $currentPath) {
+        $data = [];
+        $columnNames = [];
+        try {
+            $countSaveSuccess = $countSaveFailed = $countLoopContinue = 0;
+            $loopSkipped = 10;
+            $model = 'Talents';
+            $tableName = Inflector::tableize(Inflector::singularize($model));
+            $this->loadModel($model);
+
+            foreach ($sheet->getRowIterator() as $index => $row) {
+                $cells = $row->getCells();
+                $data = [];
+
+                //If first row then make column name
+                if ($index == 1) {
+                    $firstRows = [];
+                    foreach ($cells as $key => $val) {
+                        $firstRows[$key] = trim($val);
+                    }
+                    $columnNames = array_flip($firstRows);
+                    continue;
+                }
+
+                if (array_key_exists('เลขประจำตัว', $columnNames)) {
+                    $this->CUSTOMER_REF = @$cells[$columnNames['เลขประจำตัว']] . '';
+                } else if (array_key_exists('เลขประจำตัวประชาชนครู', $columnNames)) {
+                    $this->CUSTOMER_REF = @$cells[$columnNames['เลขประจำตัวประชาชนครู']] . '';
+                } else {
+                    $this->CUSTOMER_REF = @$cells[0] . '';
+                }
+
+                $data['card_no'] = $this->CUSTOMER_REF;
+
+                if (array_key_exists('ลำดับที่', $columnNames)) {
+                    $data['order_no'] = @$cells[$columnNames['ลำดับที่']] . '';
+                } else {
+                    $data['order_no'] = @$cells[1] . '';
+                }
+
+                if (array_key_exists('วันที่', $columnNames)) {
+                    $data['issue_date'] = @$cells[$columnNames['วันที่']] . '';
+                } else {
+                    $data['issue_date'] = @$cells[2] . '';
+                }
+
+                if (array_key_exists('รายการ', $columnNames)) {
+                    $data['name'] = @$cells[$columnNames['รายการ']] . '';
+                } else {
+                    $data['name'] = @$cells[3] . '';
+                }
+
+                if (empty($data['card_no']) || empty($data['name'])) {
+                    ++$countLoopContinue;
+                    if ($countLoopContinue > $loopSkipped) {
+                        $this->out("($countLoopContinue > $loopSkipped) = true then return true");
+                        return true;
+                    }
+                    $this->out("current countLoopContinue : $countLoopContinue");
+                    continue;
+                }
+
+                $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
+                $data = $this->trimAllData($data);
+                $modelEntities = $this->{$model}->newEntity();
+                $saveData = $this->{$model}->patchEntity($modelEntities, $data);
+
+                if ($this->{$model}->save($saveData)) {
+                    $countSaveSuccess++;
+                    $currSaveStr = $saveData->id;
+                    $this->out("$model:: save success with id :: {$currSaveStr}");
+                    $this->ActivityLogs->logInfo($model, "save success with id {$currSaveStr}");
+                } else {
+                    $countSaveFailed++;
+                    $this->out("$model:: insert failed error:: ");
+                    $sql = $this->generateInsertSQL($tableName, $data);
+                    Log::debug("{$model}:: save error:: " . $sql);
+                    $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, "insert_{$tableName}_error.log");
+                    $this->ActivityLogs->logError($model, "save error", $sql);
+                }
+            }//end foreach
+
+            $strSummary = "{$model}:: SUMMARY:: SUCCESS: {$countSaveSuccess}, FAILED: {$countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}";
+            $this->out($strSummary);
+            $this->ActivityLogs->logInfo("{$model} -> SUMMARY", "insert {$tableName} summary:: SUCCESS: {$countSaveSuccess}, FAILED: {$countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
+            $this->out("=======================================================================================================================================================================");
+            Log::debug($strSummary);
+            return true;
+        } catch (\Exception $ex) {
+            $this->catchForException($ex, $data, $model, $tableName);
+            return false;
+        }//End catch
     }
 
     /**
@@ -223,7 +439,7 @@ class EducationalsSchoolImportShell extends Shell {
                     $data['name'] = @$cells[3] . '';
                 }
 
-                if (empty($data['card_no']) || empty($data['train_title'])) {
+                if (empty($data['card_no']) || empty($data['name'])) {
                     ++$countLoopContinue;
                     if ($countLoopContinue > $loopSkipped) {
                         $this->out("($countLoopContinue > $loopSkipped) = true then return true");
