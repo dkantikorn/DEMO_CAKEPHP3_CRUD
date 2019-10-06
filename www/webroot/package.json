@@ -13,7 +13,7 @@
   "author": "Sarawutt.b",
   "license": "ISC",
   "devDependencies": {
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "bower": "^1.8.0",
     "font-awesome": "^4.7.0",
     "infinite-scroll": "^3.0.0",
