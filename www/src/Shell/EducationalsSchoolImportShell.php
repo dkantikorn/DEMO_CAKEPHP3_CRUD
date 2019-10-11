@@ -101,6 +101,13 @@ class EducationalsSchoolImportShell extends Shell {
                             $this->out('Current read sheet name: ' . $sheetName);
 
 
+                            if (in_array($sheetName, ['ข้อมูลพื้นฐาน', 'พื้นฐาน'])) {
+                                $this->ActivityLogs->logInfo("PersonalInfo", "read current file name", str_replace(DS, DS . DS, $readCurrent));
+                                $this->out('============================================    START IMPORT PERSONAL INFO  ============================================');
+                                $result = $this->importPersonalInfos($sheet, $readCurrent);
+                                $this->out('============================================    COMPLETE IMPORT PERSONAL INFO  ============================================');
+                            }
+
                             if ($sheetName == '3ตำแหน่ง-เงินเดือน') {
                                 //$this->ActivityLogs->logInfo("PositionSalaries", "read current file name", str_replace(DS, DS . DS, $readCurrent));
                                 //$result = $this->newImportPositionSalariesInfos($sheet, $readCurrent);
@@ -112,7 +119,7 @@ class EducationalsSchoolImportShell extends Shell {
                                 $result = $this->importEducationals($sheet, $readCurrent);
                                 $this->out('============================================    COMPLETE IMPORT EDUCTIONALS  ============================================');
                             }
-                            
+
                             if (in_array($sheetName, ['ประวัติการลา', 'การลา'])) {
                                 $this->ActivityLogs->logInfo("LeaveRecords", "read current file name", str_replace(DS, DS . DS, $readCurrent));
                                 $this->out('============================================    START IMPORT LEAVE RECORDS  ============================================');
@@ -147,14 +154,13 @@ class EducationalsSchoolImportShell extends Shell {
                                 $result = $this->importTalents($sheet, $readCurrent);
                                 $this->out('============================================    COMPLETE IMPORT TALENTS  ============================================');
                             }
-                            
+
                             if (in_array($sheetName, ['รายการอื่น', 'อื่นๆ'])) {
                                 $this->ActivityLogs->logInfo("ListOthers", "read current file name", str_replace(DS, DS . DS, $readCurrent));
                                 $this->out('============================================    START IMPORT LIST OTHERS  ============================================');
                                 $result = $this->importListOthers($sheet, $readCurrent);
                                 $this->out('============================================    COMPLETE IMPORT LIST OTHERS  ============================================');
                             }
-                            
                         }
 
                         $reader->close();
@@ -176,7 +182,122 @@ class EducationalsSchoolImportShell extends Shell {
         $this->out("Totoal process time\n" . $timer->resourceUsage());
     }
 
-    
+    /**
+     * 
+     * Import personal data (ข้อมูลพื้นฐาน)
+     * @param type $datas by reference
+     */
+    private function importPersonalInfos(&$sheet, $currentPath) {
+        $data = [];
+        $columnNames = [];
+        try {
+            $countSaveSuccess = $countSaveFailed = $countLoopContinue = 0;
+            $loopSkipped = 10;
+            $model = 'PersonalInfos';
+            $tableName = Inflector::tableize(Inflector::singularize($model));
+            $this->loadModel($model);
+
+            foreach ($sheet->getRowIterator() as $index => $row) {
+                $cells = $row->getCells();
+                $data = [];
+
+                //If first row then make column name
+                if ($index == 1) {
+                    $firstRows = [];
+                    foreach ($cells as $key => $val) {
+                        $firstRows[$key] = trim($val);
+                    }
+                    $columnNames = array_flip($firstRows);
+                    continue;
+                }
+
+                if (array_key_exists('เลขประจำตัวประชาชน', $columnNames)) {
+                    $this->CUSTOMER_REF = @$cells[$columnNames['เลขประจำตัวประชาชน']] . '';
+                } else if (array_key_exists('เลขประจำตัวประชาชนครู', $columnNames)) {
+                    $this->CUSTOMER_REF = @$cells[$columnNames['เลขประจำตัวประชาชนครู']] . '';
+                } else if (array_key_exists('เลขประจำตัว', $columnNames)) {
+                    $this->CUSTOMER_REF = @$cells[$columnNames['เลขประจำตัว']] . '';
+                } else {
+                    $this->CUSTOMER_REF = @$cells[0] . '';
+                }
+
+                $data['card_no'] = $this->CUSTOMER_REF;
+
+
+                $data['ref_no'] = array_key_exists('เลขเล่ม', $columnNames) ? @$cells[$columnNames['เลขเล่ม']] . '' : @$v[1] . '';
+                $data['name_prefix'] = array_key_exists('คำนำหน้า', $columnNames) ? @$cells[$columnNames['คำนำหน้า']] . '' : @$v[2] . '';
+                $data['first_name'] = array_key_exists('ชื่อ', $columnNames) ? @$cells[$columnNames['ชื่อ']] . '' : @$v[3] . '';
+                $data['last_name'] = array_key_exists('นามสกุล', $columnNames) ? @$cells[$columnNames['นามสกุล']] . '' : @$v[4] . '';
+                $data['gender'] = array_key_exists('เพศ', $columnNames) ? @$cells[$columnNames['เพศ']] . '' : @$v[5] . '';
+                $data['date_of_birth'] = array_key_exists('วันเกิด', $columnNames) ? @$cells[$columnNames['วันเกิด']] . '' : @$v[6] . '';
+                $data['marital_status'] = array_key_exists('สถานภาพการสมรส', $columnNames) ? @$cells[$columnNames['สถานภาพการสมรส']] . '' : @$v[7] . '';
+                $data['blood_group'] = array_key_exists('หมู่โลหิต', $columnNames) ? @$cells[$columnNames['หมู่โลหิต']] . '' : @$v[8] . '';
+                $data['physical_status'] = array_key_exists('สถานภาพทางกาย', $columnNames) ? @$cells[$columnNames['สถานภาพทางกาย']] . '' : @$v[9] . '';
+                $data['issue_date'] = array_key_exists('วันสั่งบรรจุ', $columnNames) ? @$cells[$columnNames['วันสั่งบรรจุ']] . '' : @$v[10] . '';
+                $data['start_date'] = array_key_exists('วันเริ่มปฏิบัติงาน', $columnNames) ? @$cells[$columnNames['วันเริ่มปฏิบัติงาน']] . '' : @$v[11] . '';
+                $data['school'] = array_key_exists('สถานศึกษา', $columnNames) ? @$cells[$columnNames['สถานศึกษา']] . '' : @$v[12] . '';
+                $data['position_no'] = array_key_exists('เลขที่ตำแหน่ง', $columnNames) ? @$cells[$columnNames['เลขที่ตำแหน่ง']] . '' : @$v[13] . '';
+                $data['position_name'] = array_key_exists('ตำแหน่ง', $columnNames) ? @$cells[$columnNames['ตำแหน่ง']] . '' : @$v[14] . '';
+                $data['position_level'] = array_key_exists('อันดับ/ระดับ', $columnNames) ? @$cells[$columnNames['อันดับ/ระดับ']] . '' : @$v[15] . '';
+                $data['phone_no'] = array_key_exists('เบอร์โทร', $columnNames) ? @$cells[$columnNames['เบอร์โทร']] . '' : @$v[16] . '';
+                $data['father_name_prefix'] = array_key_exists('คำนำหน้าบิดา', $columnNames) ? @$cells[$columnNames['คำนำหน้าบิดา']] . '' : @$v[17] . '';
+                $data['father_first_name'] = array_key_exists('ชื่อบิดา', $columnNames) ? @$cells[$columnNames['ชื่อบิดา']] . '' : @$v[18] . '';
+                $data['father_last_name'] = array_key_exists('นามสกุลบิดา', $columnNames) ? @$cells[$columnNames['นามสกุลบิดา']] . '' : @$v[19] . '';
+                $data['mother_name_prefix'] = array_key_exists('คำนำหน้ามารดา', $columnNames) ? @$cells[$columnNames['คำนำหน้ามารดา']] . '' : @$v[20] . '';
+                $data['mother_first_name'] = array_key_exists('ชื่อมารดา', $columnNames) ? @$cells[$columnNames['ชื่อมารดา']] . '' : @$v[21] . '';
+                $data['mother_last_name'] = array_key_exists('นามสกุลมารดา', $columnNames) ? @$cells[$columnNames['นามสกุลมารดา']] . '' : @$v[22] . '';
+                $data['spouse_name_prefix'] = array_key_exists('คำนำหน้าคู่สมรส', $columnNames) ? @$cells[$columnNames['คำนำหน้าคู่สมรส']] . '' : @$v[23] . '';
+                $data['spouse_first_name'] = array_key_exists('ชื่อคู่สมรส', $columnNames) ? @$cells[$columnNames['ชื่อคู่สมรส']] . '' : @$v[24] . '';
+                $data['spouse_last_name'] = array_key_exists('นามสกุลคู่สมรส', $columnNames) ? @$cells[$columnNames['นามสกุลคู่สมรส']] . '' : @$v[25] . '';
+
+
+                if (empty($data['card_no'])) {
+                    ++$countLoopContinue;
+                    if ($countLoopContinue > $loopSkipped) {
+                        $this->out("($countLoopContinue > $loopSkipped) = true then return true");
+                        return true;
+                    }
+                    $this->out("current countLoopContinue : $countLoopContinue");
+                    continue;
+                }
+
+                $tmpPath = explode(DS, $currentPath);
+                if (array_key_exists(10, $tmpPath)) {
+                    $data['area'] = $tmpPath[10];
+                }
+
+                $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
+                $data = $this->trimAllData($data);
+                $modelEntities = $this->{$model}->newEntity();
+                $saveData = $this->{$model}->patchEntity($modelEntities, $data);
+
+                if ($this->{$model}->save($saveData)) {
+                    $countSaveSuccess++;
+                    $currSaveStr = $saveData->id;
+                    $this->out("$model:: save success with id :: {$currSaveStr}");
+                    $this->ActivityLogs->logInfo($model, "save success with id {$currSaveStr}");
+                } else {
+                    $countSaveFailed++;
+                    $this->out("$model:: insert failed error:: ");
+                    $sql = $this->generateInsertSQL($tableName, $data);
+                    Log::debug("{$model}:: save error:: " . $sql);
+                    $this->CrazyLog->WRITE_FILE_CONTENT($this->LOG_PATH, $sql, "insert_{$tableName}_error.log");
+                    $this->ActivityLogs->logError($model, "save error", $sql);
+                }
+            }//end foreach
+
+            $strSummary = "{$model}:: SUMMARY:: SUCCESS: {$countSaveSuccess}, FAILED: {$countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}";
+            $this->out($strSummary);
+            $this->ActivityLogs->logInfo("{$model} -> SUMMARY", "insert {$tableName} summary:: SUCCESS: {$countSaveSuccess}, FAILED: {$countSaveFailed}, FILE: {$this->COUNT_ALL_FILES}");
+            $this->out("=======================================================================================================================================================================");
+            Log::debug($strSummary);
+            return true;
+        } catch (\Exception $ex) {
+            $this->catchForException($ex, $data, $model, $tableName);
+            return false;
+        }//End catch
+    }
+
     /**
      * 
      * Import personal data (รายการอื่น / อื่นๆ)
@@ -246,6 +367,11 @@ class EducationalsSchoolImportShell extends Shell {
                     continue;
                 }
 
+                $tmpPath = explode(DS, $currentPath);
+                if (array_key_exists(10, $tmpPath)) {
+                    $data['area'] = $tmpPath[10];
+                }
+                
                 $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
                 $data = $this->trimAllData($data);
                 $modelEntities = $this->{$model}->newEntity();
@@ -277,8 +403,7 @@ class EducationalsSchoolImportShell extends Shell {
             return false;
         }//End catch
     }
-    
-    
+
     /**
      * 
      * Import personal data (ประวัติความสามารถ / ความสามารถ)
@@ -348,6 +473,11 @@ class EducationalsSchoolImportShell extends Shell {
                     continue;
                 }
 
+                $tmpPath = explode(DS, $currentPath);
+                if (array_key_exists(10, $tmpPath)) {
+                    $data['area'] = $tmpPath[10];
+                }
+                
                 $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
                 $data = $this->trimAllData($data);
                 $modelEntities = $this->{$model}->newEntity();
@@ -449,6 +579,11 @@ class EducationalsSchoolImportShell extends Shell {
                     continue;
                 }
 
+                $tmpPath = explode(DS, $currentPath);
+                if (array_key_exists(10, $tmpPath)) {
+                    $data['area'] = $tmpPath[10];
+                }
+                
                 $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
                 $data = $this->trimAllData($data);
                 $modelEntities = $this->{$model}->newEntity();
@@ -562,6 +697,11 @@ class EducationalsSchoolImportShell extends Shell {
                     continue;
                 }
 
+                $tmpPath = explode(DS, $currentPath);
+                if (array_key_exists(10, $tmpPath)) {
+                    $data['area'] = $tmpPath[10];
+                }
+                
                 $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
                 $data = $this->trimAllData($data);
                 $modelEntities = $this->{$model}->newEntity();
@@ -689,6 +829,11 @@ class EducationalsSchoolImportShell extends Shell {
                     continue;
                 }
 
+                $tmpPath = explode(DS, $currentPath);
+                if (array_key_exists(10, $tmpPath)) {
+                    $data['area'] = $tmpPath[10];
+                }
+                
                 $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
                 $data = $this->trimAllData($data);
                 $modelEntities = $this->{$model}->newEntity();
@@ -853,6 +998,11 @@ class EducationalsSchoolImportShell extends Shell {
 
 
 
+                $tmpPath = explode(DS, $currentPath);
+                if (array_key_exists(10, $tmpPath)) {
+                    $data['area'] = $tmpPath[10];
+                }
+                
                 $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
                 $data = $this->trimAllData($data);
                 $modelEntities = $this->{$model}->newEntity();
@@ -982,6 +1132,11 @@ class EducationalsSchoolImportShell extends Shell {
 
 
 
+                $tmpPath = explode(DS, $currentPath);
+                if (array_key_exists(10, $tmpPath)) {
+                    $data['area'] = $tmpPath[10];
+                }
+                
                 $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
                 $data = $this->trimAllData($data);
                 $modelEntities = $this->{$model}->newEntity();
@@ -1201,6 +1356,10 @@ class EducationalsSchoolImportShell extends Shell {
                     $data['ref_full'] = @$cells[19] . '';
                 }
 
+                $tmpPath = explode(DS, $currentPath);
+                if (array_key_exists(10, $tmpPath)) {
+                    $data['area'] = $tmpPath[10];
+                }
 
                 $data['source_file'] = str_replace(DS, DS . DS, $currentPath);
                 $positionSalary = $this->PositionSalaries->newEntity();

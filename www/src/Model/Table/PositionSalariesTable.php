@@ -45,108 +45,108 @@ class PositionSalariesTable extends Table {
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator) {
-        $validator
-                ->allowEmpty('id', 'create');
-
-        $validator
-                ->scalar('card_no')
-                ->allowEmpty('card_no');
-
-        $validator
-                ->scalar('issue_date')
-                ->allowEmpty('issue_date');
-
-        $validator
-                ->scalar('prev_position')
-                ->allowEmpty('prev_position');
-
-        $validator
-                ->scalar('position_name')
-                ->allowEmpty('position_name');
-
-        $validator
-                ->scalar('position_no')
-                ->allowEmpty('position_no');
-
-        $validator
-                ->scalar('salary')
-                ->allowEmpty('salary');
-
-        $validator
-                ->scalar('salary_level')
-                ->allowEmpty('salary_level');
-
-        $validator
-                ->scalar('position_level')
-                ->allowEmpty('position_level');
-
-        $validator
-                ->scalar('ref_title_name')
-                ->allowEmpty('ref_title_name');
-
-        $validator
-                ->scalar('ref_command_follow')
-                ->allowEmpty('ref_command_follow');
-
-        $validator
-                ->scalar('ref_command_no')
-                ->allowEmpty('ref_command_no');
-
-        $validator
-                ->scalar('ref_command_date')
-                ->allowEmpty('ref_command_date');
-
-        $validator
-                ->scalar('ref_full')
-                ->allowEmpty('ref_full');
-
-        $validator
-                ->scalar('order_no')
-                ->allowEmpty('order_no');
-
-        $validator
-                ->scalar('school')
-                ->allowEmpty('school');
-
-        $validator
-                ->scalar('acadamic_standing')
-                ->allowEmpty('acadamic_standing');
-
-        $validator
-                ->scalar('recheck')
-                ->allowEmpty('recheck');
-
-        $validator
-                ->scalar('source_file')
-                ->allowEmpty('source_file');
-
-        $validator
-                ->scalar('remark')
-                ->allowEmpty('remark');
-
-        $validator
-                ->scalar('code')
-                ->allowEmpty('code');
-
-        $validator
-                ->scalar('edit_remark')
-                ->allowEmpty('edit_remark');
-
-        $validator
-                ->scalar('other')
-                ->allowEmpty('other');
-
-        $validator
-                ->scalar('affiliation')
-                ->allowEmpty('affiliation');
-
-        $validator
-                ->scalar('issue_date_prev')
-                ->allowEmpty('issue_date_prev');
-
-        $validator
-                ->scalar('ref_command_date_prev')
-                ->allowEmpty('ref_command_date_prev');
+//        $validator
+//                ->allowEmpty('id', 'create');
+//
+//        $validator
+//                ->scalar('card_no')
+//                ->allowEmpty('card_no');
+//
+//        $validator
+//                ->scalar('issue_date')
+//                ->allowEmpty('issue_date');
+//
+//        $validator
+//                ->scalar('prev_position')
+//                ->allowEmpty('prev_position');
+//
+//        $validator
+//                ->scalar('position_name')
+//                ->allowEmpty('position_name');
+//
+//        $validator
+//                ->scalar('position_no')
+//                ->allowEmpty('position_no');
+//
+//        $validator
+//                ->scalar('salary')
+//                ->allowEmpty('salary');
+//
+//        $validator
+//                ->scalar('salary_level')
+//                ->allowEmpty('salary_level');
+//
+//        $validator
+//                ->scalar('position_level')
+//                ->allowEmpty('position_level');
+//
+//        $validator
+//                ->scalar('ref_title_name')
+//                ->allowEmpty('ref_title_name');
+//
+//        $validator
+//                ->scalar('ref_command_follow')
+//                ->allowEmpty('ref_command_follow');
+//
+//        $validator
+//                ->scalar('ref_command_no')
+//                ->allowEmpty('ref_command_no');
+//
+//        $validator
+//                ->scalar('ref_command_date')
+//                ->allowEmpty('ref_command_date');
+//
+//        $validator
+//                ->scalar('ref_full')
+//                ->allowEmpty('ref_full');
+//
+//        $validator
+//                ->scalar('order_no')
+//                ->allowEmpty('order_no');
+//
+//        $validator
+//                ->scalar('school')
+//                ->allowEmpty('school');
+//
+//        $validator
+//                ->scalar('acadamic_standing')
+//                ->allowEmpty('acadamic_standing');
+//
+//        $validator
+//                ->scalar('recheck')
+//                ->allowEmpty('recheck');
+//
+//        $validator
+//                ->scalar('source_file')
+//                ->allowEmpty('source_file');
+//
+//        $validator
+//                ->scalar('remark')
+//                ->allowEmpty('remark');
+//
+//        $validator
+//                ->scalar('code')
+//                ->allowEmpty('code');
+//
+//        $validator
+//                ->scalar('edit_remark')
+//                ->allowEmpty('edit_remark');
+//
+//        $validator
+//                ->scalar('other')
+//                ->allowEmpty('other');
+//
+//        $validator
+//                ->scalar('affiliation')
+//                ->allowEmpty('affiliation');
+//
+//        $validator
+//                ->scalar('issue_date_prev')
+//                ->allowEmpty('issue_date_prev');
+//
+//        $validator
+//                ->scalar('ref_command_date_prev')
+//                ->allowEmpty('ref_command_date_prev');
 
         return $validator;
     }

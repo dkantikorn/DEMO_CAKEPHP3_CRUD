@@ -47,48 +47,48 @@ class TrainingsTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
-        $validator
-            ->allowEmpty('id', 'create');
-
-        $validator
-            ->scalar('card_no')
-            ->allowEmpty('card_no');
-
-        $validator
-            ->scalar('order_no')
-            ->allowEmpty('order_no');
-
-        $validator
-            ->scalar('start_date')
-            ->allowEmpty('start_date');
-
-        $validator
-            ->scalar('finish_date')
-            ->allowEmpty('finish_date');
-
-        $validator
-            ->scalar('train_title')
-            ->allowEmpty('train_title');
-
-        $validator
-            ->scalar('train_place')
-            ->allowEmpty('train_place');
-
-        $validator
-            ->scalar('generation')
-            ->allowEmpty('generation');
-
-        $validator
-            ->scalar('recheck')
-            ->allowEmpty('recheck');
-
-        $validator
-            ->scalar('source_file')
-            ->allowEmpty('source_file');
-
-        $validator
-            ->scalar('remark')
-            ->allowEmpty('remark');
+//        $validator
+//            ->allowEmpty('id', 'create');
+//
+//        $validator
+//            ->scalar('card_no')
+//            ->allowEmpty('card_no');
+//
+//        $validator
+//            ->scalar('order_no')
+//            ->allowEmpty('order_no');
+//
+//        $validator
+//            ->scalar('start_date')
+//            ->allowEmpty('start_date');
+//
+//        $validator
+//            ->scalar('finish_date')
+//            ->allowEmpty('finish_date');
+//
+//        $validator
+//            ->scalar('train_title')
+//            ->allowEmpty('train_title');
+//
+//        $validator
+//            ->scalar('train_place')
+//            ->allowEmpty('train_place');
+//
+//        $validator
+//            ->scalar('generation')
+//            ->allowEmpty('generation');
+//
+//        $validator
+//            ->scalar('recheck')
+//            ->allowEmpty('recheck');
+//
+//        $validator
+//            ->scalar('source_file')
+//            ->allowEmpty('source_file');
+//
+//        $validator
+//            ->scalar('remark')
+//            ->allowEmpty('remark');
 
         return $validator;
     }

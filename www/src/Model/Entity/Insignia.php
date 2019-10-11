@@ -46,6 +46,7 @@ class Insignia extends Entity
         'page_no' => true,
         'book_issue_date' => true,
         'govenment_gazette' => true,
+        'area' => true,
         'recheck' => true,
         'source_file' => true,
         'remark' => true,

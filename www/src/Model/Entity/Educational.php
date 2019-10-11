@@ -41,6 +41,7 @@ class Educational extends Entity
         'major' => true,
         'from_year' => true,
         'finish_year' => true,
+        'area' => true,
         'recheck' => true,
         'source_file' => true,
         'remark' => true,

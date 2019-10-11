@@ -47,48 +47,48 @@ class EducationalsTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
-        $validator
-            ->allowEmpty('id', 'create');
-
-        $validator
-            ->scalar('card_no')
-            ->allowEmpty('card_no');
-
-        $validator
-            ->scalar('order_no')
-            ->allowEmpty('order_no');
-
-        $validator
-            ->scalar('school_name')
-            ->allowEmpty('school_name');
-
-        $validator
-            ->scalar('edu_background')
-            ->allowEmpty('edu_background');
-
-        $validator
-            ->scalar('major')
-            ->allowEmpty('major');
-
-        $validator
-            ->scalar('from_year')
-            ->allowEmpty('from_year');
-
-        $validator
-            ->scalar('finish_year')
-            ->allowEmpty('finish_year');
-
-        $validator
-            ->scalar('recheck')
-            ->allowEmpty('recheck');
-
-        $validator
-            ->scalar('source_file')
-            ->allowEmpty('source_file');
-
-        $validator
-            ->scalar('remark')
-            ->allowEmpty('remark');
+//        $validator
+//            ->allowEmpty('id', 'create');
+//
+//        $validator
+//            ->scalar('card_no')
+//            ->allowEmpty('card_no');
+//
+//        $validator
+//            ->scalar('order_no')
+//            ->allowEmpty('order_no');
+//
+//        $validator
+//            ->scalar('school_name')
+//            ->allowEmpty('school_name');
+//
+//        $validator
+//            ->scalar('edu_background')
+//            ->allowEmpty('edu_background');
+//
+//        $validator
+//            ->scalar('major')
+//            ->allowEmpty('major');
+//
+//        $validator
+//            ->scalar('from_year')
+//            ->allowEmpty('from_year');
+//
+//        $validator
+//            ->scalar('finish_year')
+//            ->allowEmpty('finish_year');
+//
+//        $validator
+//            ->scalar('recheck')
+//            ->allowEmpty('recheck');
+//
+//        $validator
+//            ->scalar('source_file')
+//            ->allowEmpty('source_file');
+//
+//        $validator
+//            ->scalar('remark')
+//            ->allowEmpty('remark');
 
         return $validator;
     }

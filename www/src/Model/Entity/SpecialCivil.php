@@ -36,6 +36,7 @@ class SpecialCivil extends Entity
         'name' => true,
         'recheck' => true,
         'source_file' => true,
+        'area' => true,
         'remark' => true,
         'created' => true,
         'modified' => true

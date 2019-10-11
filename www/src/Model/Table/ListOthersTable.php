@@ -47,36 +47,36 @@ class ListOthersTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
-        $validator
-            ->allowEmpty('id', 'create');
-
-        $validator
-            ->scalar('card_no')
-            ->allowEmpty('card_no');
-
-        $validator
-            ->scalar('order_no')
-            ->allowEmpty('order_no');
-
-        $validator
-            ->scalar('issue_date')
-            ->allowEmpty('issue_date');
-
-        $validator
-            ->scalar('name')
-            ->allowEmpty('name');
-
-        $validator
-            ->scalar('recheck')
-            ->allowEmpty('recheck');
-
-        $validator
-            ->scalar('source_file')
-            ->allowEmpty('source_file');
-
-        $validator
-            ->scalar('remark')
-            ->allowEmpty('remark');
+//        $validator
+//            ->allowEmpty('id', 'create');
+//
+//        $validator
+//            ->scalar('card_no')
+//            ->allowEmpty('card_no');
+//
+//        $validator
+//            ->scalar('order_no')
+//            ->allowEmpty('order_no');
+//
+//        $validator
+//            ->scalar('issue_date')
+//            ->allowEmpty('issue_date');
+//
+//        $validator
+//            ->scalar('name')
+//            ->allowEmpty('name');
+//
+//        $validator
+//            ->scalar('recheck')
+//            ->allowEmpty('recheck');
+//
+//        $validator
+//            ->scalar('source_file')
+//            ->allowEmpty('source_file');
+//
+//        $validator
+//            ->scalar('remark')
+//            ->allowEmpty('remark');
 
         return $validator;
     }

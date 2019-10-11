@@ -36,6 +36,7 @@ class ListOther extends Entity
         'name' => true,
         'recheck' => true,
         'source_file' => true,
+        'area' => true,
         'remark' => true,
         'created' => true,
         'modified' => true

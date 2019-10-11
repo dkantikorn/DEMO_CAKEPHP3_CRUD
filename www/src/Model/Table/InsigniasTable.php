@@ -47,60 +47,60 @@ class InsigniasTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
-        $validator
-            ->allowEmpty('id', 'create');
-
-        $validator
-            ->scalar('card_no')
-            ->allowEmpty('card_no');
-
-        $validator
-            ->scalar('order_no')
-            ->allowEmpty('order_no');
-
-        $validator
-            ->scalar('issue_date')
-            ->allowEmpty('issue_date');
-
-        $validator
-            ->scalar('name')
-            ->allowEmpty('name');
-
-        $validator
-            ->scalar('book_no')
-            ->allowEmpty('book_no');
-
-        $validator
-            ->scalar('section_no')
-            ->allowEmpty('section_no');
-
-        $validator
-            ->scalar('book_order')
-            ->allowEmpty('book_order');
-
-        $validator
-            ->scalar('page_no')
-            ->allowEmpty('page_no');
-
-        $validator
-            ->scalar('book_issue_date')
-            ->allowEmpty('book_issue_date');
-
-        $validator
-            ->scalar('govenment_gazette')
-            ->allowEmpty('govenment_gazette');
-
-        $validator
-            ->scalar('recheck')
-            ->allowEmpty('recheck');
-
-        $validator
-            ->scalar('source_file')
-            ->allowEmpty('source_file');
-
-        $validator
-            ->scalar('remark')
-            ->allowEmpty('remark');
+//        $validator
+//            ->allowEmpty('id', 'create');
+//
+//        $validator
+//            ->scalar('card_no')
+//            ->allowEmpty('card_no');
+//
+//        $validator
+//            ->scalar('order_no')
+//            ->allowEmpty('order_no');
+//
+//        $validator
+//            ->scalar('issue_date')
+//            ->allowEmpty('issue_date');
+//
+//        $validator
+//            ->scalar('name')
+//            ->allowEmpty('name');
+//
+//        $validator
+//            ->scalar('book_no')
+//            ->allowEmpty('book_no');
+//
+//        $validator
+//            ->scalar('section_no')
+//            ->allowEmpty('section_no');
+//
+//        $validator
+//            ->scalar('book_order')
+//            ->allowEmpty('book_order');
+//
+//        $validator
+//            ->scalar('page_no')
+//            ->allowEmpty('page_no');
+//
+//        $validator
+//            ->scalar('book_issue_date')
+//            ->allowEmpty('book_issue_date');
+//
+//        $validator
+//            ->scalar('govenment_gazette')
+//            ->allowEmpty('govenment_gazette');
+//
+//        $validator
+//            ->scalar('recheck')
+//            ->allowEmpty('recheck');
+//
+//        $validator
+//            ->scalar('source_file')
+//            ->allowEmpty('source_file');
+//
+//        $validator
+//            ->scalar('remark')
+//            ->allowEmpty('remark');
 
         return $validator;
     }

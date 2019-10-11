@@ -54,6 +54,7 @@ class LeaveRecord extends Entity
         'inter_work_leave' => true,
         'follow_spouse_leave' => true,
         'rehabilitation_leave' => true,
+        'area' => true,
         'recheck' => true,
         'source_file' => true,
         'remark' => true,
