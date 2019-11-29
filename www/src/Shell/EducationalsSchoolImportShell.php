@@ -257,7 +257,7 @@ class EducationalsSchoolImportShell extends Shell {
                         $this->out("($countLoopContinue > $loopSkipped) = true then return true");
                         return true;
                     }
-                    $this->out("current countLoopContinue : $countLoopContinue");
+                    //$this->out("current countLoopContinue : $countLoopContinue");
                     continue;
                 }
 
@@ -363,7 +363,7 @@ class EducationalsSchoolImportShell extends Shell {
                         $this->out("($countLoopContinue > $loopSkipped) = true then return true");
                         return true;
                     }
-                    $this->out("current countLoopContinue : $countLoopContinue");
+                    //$this->out("current countLoopContinue : $countLoopContinue");
                     continue;
                 }
 
@@ -469,7 +469,7 @@ class EducationalsSchoolImportShell extends Shell {
                         $this->out("($countLoopContinue > $loopSkipped) = true then return true");
                         return true;
                     }
-                    $this->out("current countLoopContinue : $countLoopContinue");
+                    //$this->out("current countLoopContinue : $countLoopContinue");
                     continue;
                 }
 
@@ -575,7 +575,7 @@ class EducationalsSchoolImportShell extends Shell {
                         $this->out("($countLoopContinue > $loopSkipped) = true then return true");
                         return true;
                     }
-                    $this->out("current countLoopContinue : $countLoopContinue");
+                    //$this->out("current countLoopContinue : $countLoopContinue");
                     continue;
                 }
 
@@ -693,7 +693,7 @@ class EducationalsSchoolImportShell extends Shell {
                         $this->out("($countLoopContinue > $loopSkipped) = true then return true");
                         return true;
                     }
-                    $this->out("current countLoopContinue : $countLoopContinue");
+                    //$this->out("current countLoopContinue : $countLoopContinue");
                     continue;
                 }
 
@@ -825,7 +825,7 @@ class EducationalsSchoolImportShell extends Shell {
                         $this->out("($countLoopContinue > $loopSkipped) = true then return true");
                         return true;
                     }
-                    $this->out("current countLoopContinue : $countLoopContinue");
+                    //$this->out("current countLoopContinue : $countLoopContinue");
                     continue;
                 }
 
@@ -992,7 +992,7 @@ class EducationalsSchoolImportShell extends Shell {
                         $this->out("($countLoopContinue > $loopSkipped) = true then return true");
                         return true;
                     }
-                    $this->out("current countLoopContinue : $countLoopContinue");
+                    //$this->out("current countLoopContinue : $countLoopContinue");
                     continue;
                 }
 
@@ -1126,7 +1126,7 @@ class EducationalsSchoolImportShell extends Shell {
                         $this->out("($countLoopContinue > $loopSkipped) = true then return true");
                         return true;
                     }
-                    $this->out("current countLoopContinue : $countLoopContinue");
+                    //$this->out("current countLoopContinue : $countLoopContinue");
                     continue;
                 }
 
@@ -1223,7 +1223,7 @@ class EducationalsSchoolImportShell extends Shell {
                         $this->out('($countLoopContinue > $loopSkipped) = true then return true');
                         return true;
                     }
-                    $this->out("current countLoopContinue : $countLoopContinue");
+                    //$this->out("current countLoopContinue : $countLoopContinue");
                     continue;
                 }
 
